@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Triagem SXF - Dashboard</title>
+    <link rel="stylesheet" href="/docs/src/css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="/docs/src/js/script.js" defer></script>
+    
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i data-lucide="activity"></i>
+                <div>
+                    <span>Sistema de Triagem</span>
+                    <strong>SXF Brasil</strong>
+                </div>
+            </div>
+            <nav>
+                <a href="#" class="active"><i data-lucide="home"></i> Início</a>
+                <a href="#"><i data-lucide="info"></i> Sobre a SXF</a>
+                <a href="#"><i data-lucide="user-plus"></i> Cadastro de Médicos</a>
+                <a href="#"><i data-lucide="user"></i> Cadastro de Pacientes</a>
+                <a href="#"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
+                <a href="#"><i data-lucide="bar-chart-3"></i> Resultados</a>
+            </nav>
+            <div class="sidebar-footer">
+                <p>PUCPR • Instituto Buko Kaesemodel</p>
+                <p>v1.0.0 - 2025</p>
+            </div>
+        </aside>
+        <main class="content">
+            <header class="cabecalho">
+                SXF Brasil > <span>Início</span>
+            </header>
+
+            <section class="bem-vindo">
+                <h1>Bem-vindo ao Sistema de Triagem SXF</h1>
+                <p>Síndrome do X Frágil • Checklist Clínico para Triagem Populacional</p>
+            </section>
+
+            <div class="banner-validada">
+                <i data-lucide="activity" class="banner-icon"></i>
+                <div class="banner-text">
+                    <h3>Ferramenta de Triagem Clínica Validada</h3>
+                    <p>Desenvolvida com base em coorte de 419 indivíduos com SXF (IBK 2018–2023). Utiliza Random Forest com sensibilidade de 95% e AUC > 0,70 para ambos os sexos.</p>
+                    <button class="btn-saiba-mais">Saiba mais <i data-lucide="arrow-right"></i></button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="card stat-card green-bg">
+                    <div class="icon-box green-icon"><i data-lucide="user-cog"></i></div>
+                    <h2 id="count-medicos">0</h2>
+                    <p>Médicos Cadastrados</p>
+                </div>
+                <div class="card stat-card blue-bg">
+                    <div class="icon-box blue-icon"><i data-lucide="users"></i></div>
+                    <h2 id="count-pacientes">0</h2>
+                    <p>Pacientes Cadastrados</p>
+                </div>
+                <div class="card stat-card purple-bg">
+                    <div class="icon-box purple-icon"><i data-lucide="clipboard-list"></i></div>
+                    <h2 id="count-triagens">0</h2>
+                    <p>Triagens Realizadas</p>
+                </div>
+                <div class="card stat-card red-bg">
+                    <div class="icon-box red-icon"><i data-lucide="trending-up"></i></div>
+                    <h2 id="count-encaminhamentos">0</h2>
+                    <p>Encaminhamentos</p>
+                </div>
+            </div>
+
+            <div class="bottom-grid">
+                <div class="card actions">
+                    <h3>Ações Rápidas</h3>
+                    <ul class="action-list">
+                        <li>
+                            <div class="action-icon-bg green-soft"><i data-lucide="clipboard-check"></i></div>
+                            <div class="action-text"><strong>Nova Triagem de Sintomas</strong><span>Aplicar checklist clínico</span></div>
+                            <i data-lucide="chevron-right" class="chevron"></i>
+                        </li>
+                        <li>
+                            <div class="action-icon-bg blue-soft"><i data-lucide="user-plus"></i></div>
+                            <div class="action-text"><strong>Cadastrar Paciente</strong><span>Adicionar novo paciente</span></div>
+                            <i data-lucide="chevron-right" class="chevron"></i>
+                        </li>
+                        <li>
+                            <div class="action-icon-bg purple-soft"><i data-lucide="stethoscope"></i></div>
+                            <div class="action-text"><strong>Cadastrar Médico</strong><span>Adicionar novo profissional</span></div>
+                            <i data-lucide="chevron-right" class="chevron"></i>
+                        </li>
+                        <li>
+                            <div class="action-icon-bg orange-soft"><i data-lucide="bar-chart-3"></i></div>
+                            <div class="action-text"><strong>Ver Resultados</strong><span>Histórico de avaliações</span></div>
+                            <i data-lucide="chevron-right" class="chevron"></i>
+                        </li>
+                        <li>
+                            <div class="action-icon-bg yellow-soft"><i data-lucide="info"></i></div>
+                            <div class="action-text"><strong>Sobre a SXF</strong><span>Informações clínicas</span></div>
+                            <i data-lucide="chevron-right" class="chevron"></i>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card evaluations">
+                    <div class="card-header">
+                        <h3>Últimas Avaliações</h3>
+                        <a href="#" id="btn-ver-todos">Ver todos <i data-lucide="arrow-right"></i></a>
+                    </div>
+                    <div id="evaluations-container"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
