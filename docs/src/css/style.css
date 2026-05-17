@@ -235,6 +235,16 @@ body {
     cursor: pointer;
 }
 
+.action-list li a {
+    display: flex;
+    align-items: center;
+    gap: inherit;
+    color: inherit;
+    text-decoration: none;
+    width: 100%;
+
+}
+
 .action-list li:hover {
     background-color: #f1f5f9;
 }

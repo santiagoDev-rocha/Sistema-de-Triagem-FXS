@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Pacientes - FXS</title>
+    <link rel="stylesheet" href="/docs/src/css/cadastro-pacientes.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="/docs/src/js/cadastro-pacientes.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i data-lucide="activity"></i>
+                <div>
+                    <span>Sistema de Triagem</span>
+                    <strong>FXS Brasil</strong>
+                </div>
+            </div>
+            <nav>
+                <a href="./../../index.html"><i data-lucide="home"></i> Início</a>
+                <a href="#"><i data-lucide="info"></i> Sobre a FXS</a>
+                <a href="#"><i data-lucide="user-plus"></i> Cadastro de Médicos</a>
+                <a href="#" class="active"><i data-lucide="users"></i> Cadastro de Pacientes</a>
+                <a href="#"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
+                <a href="#"><i data-lucide="bar-chart-3"></i> Resultados</a>
+            </nav>
+            <div class="sidebar-footer">
+                <p>PUCPR • Instituto Buko Kaesemodel</p>
+                <p>v1.0.0 - 2025</p>
+            </div>
+        </aside>
+
+        <main class="content">
+            <header class="breadcrumb">
+                FXS Brasil > <span>Cadastro de Pacientes</span>
+            </header>
+
+            <section class="page-header">
+                <div>
+                    <h1>Cadastro de Pacientes</h1>
+                    <p id="contador-pacientes">0 pacientes cadastrados</p>
+                </div>
+                <button id="btn-abrir-modal" class="btn-novo">
+                    <i data-lucide="plus"></i> Novo Paciente
+                </button>
+            </section>
+
+            <div class="filter-bar">
+                <div class="search-input">
+                    <i data-lucide="search"></i>
+                    <input type="text" placeholder="Buscar pacientes...">
+                </div>
+                <div class="filter-options">
+                    <button class="filter-btn active">Todos</button>
+                    <button class="filter-btn"><i data-lucide="mars"></i> Masc.</button>
+                    <button class="filter-btn"><i data-lucide="venus"></i> Fem.</button>
+                </div>
+            </div>
+
+            <div class="patients-list">
+            </div>
+        </main>
+    </div>
+
+    <div id="modal-paciente" class="modal-overlay">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h3><i data-lucide="users"></i> Novo Paciente</h3>
+                <button id="btn-fechar" class="close-x">&times</button>
+            </header>
+
+            <form id="form-cadastro">
+                <div class="form-group full">
+                    <label>Nome Completo do Paciente*</label>
+                    <input type="text" placeholder="Nome completo" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Sexo Biológico * <span class="obs">(importante para o cálculo do score)</span></label>
+                        <div class="gender-selector">
+                            <label class="radio-btn">
+                                <input type="radio" name="sexo" value="M" required>
+                                <span><i data-lucide="mars"></i> Masculino</span>
+                            </label>
+                            <label class="radio-btn">
+                                <input type="radio" name="sexo" value="F" required>
+                                <span><i data-lucide="venus"></i> Feminino</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Data de Nascimento *</label>
+                        <input type="date" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nome do Responsável *</label>
+                        <input type="text" placeholder="Nome do pai/mãe/responsável" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone do Responsável *</label>
+                        <input type="text" placeholder="(41) 99999-9999" required>
+                    </div>
+                </div>
+                <div class="form-group full">
+                    <label>E-mail(Opcional)</label>
+                    <input type="email" placeholder="email@exemplo.com">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn-cancelar" class="btn-cancel">Cancelar</button>
+                    <button type="submit" class="btn-save"><i data-lucide="check"></i> Cadastrar Paciente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

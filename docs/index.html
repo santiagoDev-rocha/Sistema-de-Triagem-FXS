@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Triagem SXF - Dashboard</title>
+    <title>Sistema de Triagem FXS - Dashboard</title>
     <link rel="stylesheet" href="/docs/src/css/style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="/docs/src/js/script.js" defer></script>
-    
 </head>
 <body>
     <div class="container">
@@ -16,14 +15,14 @@
                 <i data-lucide="activity"></i>
                 <div>
                     <span>Sistema de Triagem</span>
-                    <strong>SXF Brasil</strong>
+                    <strong>FXS Brasil</strong>
                 </div>
             </div>
             <nav>
                 <a href="#" class="active"><i data-lucide="home"></i> Início</a>
-                <a href="#"><i data-lucide="info"></i> Sobre a SXF</a>
+                <a href="#"><i data-lucide="info"></i> Sobre a FXS</a>
                 <a href="#"><i data-lucide="user-plus"></i> Cadastro de Médicos</a>
-                <a href="#"><i data-lucide="user"></i> Cadastro de Pacientes</a>
+                <a href="/docs/src/pages/cadastro-pacientes.html"><i data-lucide="user"></i> Cadastro de Pacientes</a>
                 <a href="#"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
                 <a href="#"><i data-lucide="bar-chart-3"></i> Resultados</a>
             </nav>
@@ -34,19 +33,19 @@
         </aside>
         <main class="content">
             <header class="cabecalho">
-                SXF Brasil > <span>Início</span>
+                FXS Brasil > <span>Início</span>
             </header>
 
             <section class="bem-vindo">
-                <h1>Bem-vindo ao Sistema de Triagem SXF</h1>
+                <h1>Bem-vindo ao Sistema de Triagem FXS</h1>
                 <p>Síndrome do X Frágil • Checklist Clínico para Triagem Populacional</p>
             </section>
 
             <div class="banner-validada">
                 <i data-lucide="activity" class="banner-icon"></i>
                 <div class="banner-text">
-                    <h3>Ferramenta de Triagem Clínica Validada</h3>
-                    <p>Desenvolvida com base em coorte de 419 indivíduos com SXF (IBK 2018–2023). Utiliza Random Forest com sensibilidade de 95% e AUC > 0,70 para ambos os sexos.</p>
+                    <h3>Ferramenta de Triagem Clinical Validada</h3>
+                    <p>Desenvolvida com base em coorte de 419 indivíduos com FXS (IBK 2018–2023). Utiliza Random Forest com sensibilidade de 95% e AUC > 0,70 para ambos os sexos.</p>
                     <button class="btn-saiba-mais">Saiba mais <i data-lucide="arrow-right"></i></button>
                 </div>
             </div>
@@ -84,9 +83,11 @@
                             <i data-lucide="chevron-right" class="chevron"></i>
                         </li>
                         <li>
-                            <div class="action-icon-bg blue-soft"><i data-lucide="user-plus"></i></div>
-                            <div class="action-text"><strong>Cadastrar Paciente</strong><span>Adicionar novo paciente</span></div>
-                            <i data-lucide="chevron-right" class="chevron"></i>
+                            <a href="/docs/src/pages/cadastro-pacientes.html">
+                                <div class="action-icon-bg blue-soft"><i data-lucide="user-plus"></i></div>
+                                <div class="action-text"><strong>Cadastrar Paciente</strong><span>Adicionar novo paciente</span></div>
+                                <i data-lucide="chevron-right" class="chevron"></i>
+                            </a>
                         </li>
                         <li>
                             <div class="action-icon-bg purple-soft"><i data-lucide="stethoscope"></i></div>
@@ -100,7 +101,7 @@
                         </li>
                         <li>
                             <div class="action-icon-bg yellow-soft"><i data-lucide="info"></i></div>
-                            <div class="action-text"><strong>Sobre a SXF</strong><span>Informações clínicas</span></div>
+                            <div class="action-text"><strong>Sobre a FXS</strong><span>Informações clínicas</span></div>
                             <i data-lucide="chevron-right" class="chevron"></i>
                         </li>
                     </ul>
@@ -108,7 +109,7 @@
                 <div class="card evaluations">
                     <div class="card-header">
                         <h3>Últimas Avaliações</h3>
-                        <a href="#" id="btn-ver-todos">Ver todos <i data-lucide="arrow-right"></i></a>
+                        <a href="/docs/src/pages/cadastro-pacientes.html" id="btn-ver-todos">Ver todos <i data-lucide="arrow-right"></i></a>
                     </div>
                     <div id="evaluations-container"></div>
                 </div>
