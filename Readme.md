@@ -1,5 +1,5 @@
-Sistema de Triagem SXF Brasil
-Este projeto consiste em um dashboard para o Sistema de Triagem da Síndrome do X Frágil (SXF). Ele foi desenvolvido como parte de um projeto acadêmico para o curso de Bacharelado em Ciência da Computação da Pontifícia Universidade Católica do Paraná (PUCPR).
+Sistema de Triagem FXS Brasil
+Este projeto consiste em um dashboard para o Sistema de Triagem da Síndrome do X Frágil (FXS). Ele foi desenvolvido como parte de um projeto acadêmico para o curso de Bacharelado em Ciência da Computação da Pontifícia Universidade Católica do Paraná (PUCPR).
 
 O sistema utiliza uma ferramenta de triagem clínica validada, baseada em algoritmos de Machine Learning (Random Forest), para auxiliar na triagem populacional com alta sensibilidade.
 
