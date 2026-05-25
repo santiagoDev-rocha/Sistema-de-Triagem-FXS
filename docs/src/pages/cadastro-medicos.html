@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Médicos</title>
+    <link rel="stylesheet" href="./../css/cadastro-medicos.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="./../js/cadastro-medicos.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i data-lucide="activity"></i>
+                <div>
+                    <span>Sistema de Triagem</span>
+                    <strong>FXS Brasil</strong>
+                </div>
+            </div>
+            <nav>
+                <a href="./home.html"><i data-lucide="home"></i> Início</a>
+                <a href="#"><i data-lucide="info"></i> Sobre a FXS</a>
+                <a href="#" class="active"><i data-lucide="user-plus"></i> Cadastro de Médicos</a>
+                <a href="./cadastro-pacientes.html"><i data-lucide="user"></i> Cadastro de Pacientes</a>
+                <a href="#"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
+                <a href="#"><i data-lucide="bar-chart-3"></i> Resultados</a>
+            </nav>
+            <div class="sidebar-footer">
+                <p>PUCPR • Instituto Buko Kaesemodel</p>
+                <p>v1.0.0 - 2025</p>
+            </div>
+        </aside>
+        <main class="content">
+            <header class="breadcrumb">
+                FXS Brasil > <span>Cadastro de Médicos</span>
+            </header>
+
+            <section class="page-header">
+                <div>
+                    <h1>Cadastro de Médicos</h1>
+                    <p id="contador-medicos">0 médicos cadastrados</p>
+                </div>
+                <button id="btn-abrir-modal" class="btn-novo">
+                    <i data-lucide="plus"></i> Novo Médico
+                </button>
+            </section>
+
+            <div class="filter-bar">
+                <div class="search-input">
+                    <i data-lucide="search"></i>
+                    <input type="text" placeholder="Buscar médicos por nome ou CRM...">
+                </div>
+            </div>
+
+            <div class="medicos-list">
+            </div>
+        </main>
+    </div>
+    <div id="modal-medico" class="modal-overlay">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h3><i data-lucide="user-plus"></i> Novo Médico</h3>
+                <button id="btn-fechar" class="close-x">&times;</button>
+            </header>
+            
+            <form id="form-cadastro-medico">
+                <div class="form-group full">
+                    <label>Nome Completo *</label>
+                    <input type="text" id="nome-medico" placeholder="Nome completo profissional" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>CRM *</label>
+                        <input type="text" id="crm-medico" placeholder="000000-XX" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Especialidade *</label>
+                        <input type="text" id="especialidade-medico" placeholder="Ex: Pediatria, Neurologia" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Telefone de Contato *</label>
+                        <input type="text" id="telefone-medico" placeholder="(41) 99999-9999" required>
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail *</label>
+                        <input type="email" id="email-medico" placeholder="medico@exemplo.com" required>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="btn-cancelar" class="btn-cancel">Cancelar</button>
+                    <button type="submit" class="btn-save"><i data-lucide="check"></i> Cadastrar Médico</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Sistema de Triagem FXS - Login</title>
-    <link rel="stylesheet" href="/docs/src/css/style.css">
+    <link rel="stylesheet" href="./src/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="/docs/src/js/script.js" defer></script>
+    <script src="./src/js/script.js" defer></script>
 </head>
 <body>
 
@@ -21,17 +21,17 @@
                 </div>
             </div>
             
-            <form>
+            <form id="login-form">
                 <div class="bem_vindo">
                     <h2 class="texto_dark">Bem-vindo</h2>
                     <h3 class="sub_bem_vindo">Faça login para acessar o sistema</h3>
                 </div>
                 
                 <div class="login_senha">
-                    <h4 class="texto_dark">Email ou Usuário</h4>
+                    <h4 class="texto_dark">Email</h4>
                     <div class="input_container">
                         <i class="fa-regular fa-user input_icon"></i>
-                        <input type="text" placeholder="Digite seu email ou usuário">
+                        <input type="email" id="email" placeholder="Digite seu email" required>
                     </div>
                 </div>
                 
@@ -39,11 +39,11 @@
                     <h4 class="texto_dark">Senha</h4>
                     <div class="input_container">
                         <i class="fa-solid fa-lock input_icon"></i>
-                        <input type="password" placeholder="Digite sua senha">
+                        <input type="password" id='password' placeholder="Digite sua senha" required>
                     </div>
                 </div>
-                
-                    <button type="submit" class="botao"><a href="/docs/src/pages/home.html">Entrar</a></button>
+                <p id="mensagem-erro" style="color: red; font-size: 14px; margin-bottom: 10px; display: none;"></p>
+                <button type="submit" class="botao">Entrar</button>
             </form>
         </div>
 
@@ -51,4 +51,20 @@
     </div>
     
 </body>
+<script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-auth-compat.js"></script>
+<script>
+    const firebaseConfig = {
+        //mudar para o firebase do projeto 
+        apiKey: "AIzaSyB3VogDgd3I2vYsbnC-S5jlukwaibH7jBo",
+        authDomain: "fir-pucpr-63196.firebaseapp.com",
+        projectId: "fir-pucpr-63196",
+        storageBucket: "fir-pucpr-63196.firebasestorage.app",
+        messagingSenderId: "779714684026",
+        appId: "1:779714684026:web:4ea2aa303297e249ae07c3",
+        measurementId: "G-QYP4JKXJ8T"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+</script>
 </html>

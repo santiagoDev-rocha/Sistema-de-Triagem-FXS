@@ -1,13 +1,10 @@
 function inicializarDashboard() {
-    // 1. Puxa a lista real de pacientes criada na tela de cadastro através do LocalStorage
     const listaPacientes = JSON.parse(localStorage.getItem('pacientes_sxf')) || [];
+    const listaMedicos = JSON.parse(localStorage.getItem('medicos_sxf')) || []; 
 
-    // 2. Cria um array dinâmico filtrando apenas os pacientes que já realizaram alguma triagem
-    // Como o Santiago foi recém-cadastrado, ele começa com 0 triagens, então esse array ficará vazio []
     const triagensReais = [];
     listaPacientes.forEach(p => {
         if (p.triagens && p.triagens > 0) {
-            // Se no futuro o paciente tiver dados de triagem salvos, alimentamos aqui
             triagensReais.push({
                 paciente: p.nome,
                 score: p.score || "0.00",
@@ -19,21 +16,18 @@ function inicializarDashboard() {
 
     const totalTriagens = triagensReais.length;
     
-    // 3. Atualiza os contadores principais com dados 100% dinâmicos
-    document.getElementById('count-medicos').innerText = 0; // Pode ser integrado ao LocalStorage futuramente
-    document.getElementById('count-pacientes').innerText = listaPacientes.length; // Aqui vai aparecer "1" por causa do Santiago
-    document.getElementById('count-triagens').innerText = totalTriagens; // Vai aparecer "0"
+    document.getElementById('count-medicos').innerText = listaMedicos.length; 
+    document.getElementById('count-pacientes').innerText = listaPacientes.length; 
+    document.getElementById('count-triagens').innerText = totalTriagens; 
     
     const encaminhamentos = triagensReais.filter(t => t.status === "Encaminhar").length;
-    document.getElementById('count-encaminhamentos').innerText = encaminhamentos; // Vai aparecer "0"
+    document.getElementById('count-encaminhamentos').innerText = encaminhamentos; 
 
-    // 4. Controla a renderização da seção de Últimas Avaliações
     const container = document.getElementById('evaluations-container');
     const btnVerTodos = document.getElementById('btn-ver-todos');
 
     if (!container) return;
 
-    // Se o Santiago não tem triagens, renderiza o Estado Vazio limpando o Pedro Henrique fixo
     if (totalTriagens === 0) {
         if (btnVerTodos) btnVerTodos.style.display = 'none';
         container.innerHTML = `
@@ -43,7 +37,6 @@ function inicializarDashboard() {
             </div>
         `;
     } else {
-        // Se houver alguma triagem real futuramente, renderiza os cards
         if (btnVerTodos) btnVerTodos.style.display = 'flex';
         container.innerHTML = triagensReais.map(t => `
             <div class="eval-row">
@@ -67,7 +60,6 @@ function inicializarDashboard() {
         `).join('');
     }
 
-    // Processa os ícones do Lucide criados dinamicamente
     if (window.lucide) {
         window.lucide.createIcons();
     }
