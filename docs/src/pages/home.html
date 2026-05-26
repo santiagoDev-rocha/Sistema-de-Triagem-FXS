@@ -6,17 +6,16 @@
     <title>Sistema de Triagem FXS - Dashboard</title>
     <link rel="stylesheet" href="./../css/home.css">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-auth-compat.js"></script>
+    <script src="./../js/api.js" defer></script>
     <script src="./../js/home.js" defer></script>
 </head>
 <body>
     <div class="container">
         <aside class="sidebar">
             <div class="logo">
-                <i data-lucide="activity"></i>
-                <div>
-                    <span>Sistema de Triagem</span>
-                    <strong>FXS Brasil</strong>
-                </div>
+                <img src="./../img/logo.png" alt="IBK Logo" class="logo-img">
             </div>
             <nav>
                 <a href="#" class="active"><i data-lucide="home"></i> Início</a>
@@ -27,6 +26,7 @@
                 <a href="#"><i data-lucide="bar-chart-3"></i> Resultados</a>
             </nav>
             <div class="sidebar-footer">
+                <a href="#" onclick="logout(); return false;" class="logout-link"><i data-lucide="log-out"></i> Sair</a>
                 <p>PUCPR • Instituto Buko Kaesemodel</p>
                 <p>v1.0.0 - 2025</p>
             </div>

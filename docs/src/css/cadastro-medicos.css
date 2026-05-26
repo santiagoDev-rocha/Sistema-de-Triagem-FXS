@@ -1,9 +1,11 @@
 :root {
-    --primary-green: #064e3b;
-    --sidebar-bg: #1e3a2b;
-    --bg-body: #f8fafc;
-    --text-dark: #334155;
-    --text-muted: #64748b;
+    --primary: #212b54;
+    --sidebar-bg: #222c53;
+    --accent: #ff6b3d;
+    --bg-body: #f8f8f8;
+    --text-dark: #212121;
+    --text-muted: #545454;
+    --text-placeholder: #999999;
     --white: #ffffff;
 }
 
@@ -41,8 +43,10 @@ body {
     margin-bottom: 40px;
 }
 
-.logo i { color: #4ade80; }
-.logo strong { font-size: 1.1rem; display: block; }
+.logo .logo-img {
+    height: 40px;
+    width: auto;
+}
 
 .sidebar nav a {
     display: flex;
@@ -65,7 +69,7 @@ body {
 .sidebar-footer {
     margin-top: auto;
     font-size: 0.7rem;
-    color: #94a3b8;
+    color: var(--text-placeholder);
 }
 
 .content {
@@ -76,7 +80,7 @@ body {
 
 .breadcrumb {
     font-size: 0.8rem;
-    color: #94a3b8;
+    color: var(--text-placeholder);
     margin-bottom: 20px;
 }
 
@@ -94,7 +98,7 @@ body {
 
 .page-header h1 {
     font-size: 1.75rem;
-    color: var(--primary-green);
+    color: var(--primary);
 }
 
 .page-header p {
@@ -104,7 +108,7 @@ body {
 }
 
 .btn-novo {
-    background-color: var(--primary-green);
+    background-color: var(--primary);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -133,7 +137,7 @@ body {
     left: 14px;
     top: 50%;
     transform: translateY(-50%);
-    color: #94a3b8;
+    color: var(--text-placeholder);
     width: 18px;
 }
 
@@ -166,8 +170,8 @@ body {
 .medico-avatar {
     width: 46px;
     height: 46px;
-    background-color: #d1fae5;
-    color: #065f46;
+    background-color: #d0d4e4;
+    color: #212b54;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -272,12 +276,12 @@ body {
 }
 
 .modal-header {
-    background-color: #f0fdf4;
+    background-color: #e8eaf2;
     padding: 16px 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: var(--primary-green);
+    color: var(--primary);
     border-bottom: 1px solid #e2e8f0;
 }
 
@@ -293,7 +297,7 @@ body {
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    color: #94a3b8;
+    color: var(--text-placeholder);
 }
 
 #form-cadastro-medico {
@@ -327,7 +331,7 @@ input[type="text"], input[type="email"] {
 }
 
 input:focus {
-    border-color: #059669;
+    border-color: #212b54;
     background-color: white;
 }
 
@@ -350,7 +354,7 @@ input:focus {
 }
 
 .btn-save {
-    background-color: var(--primary-green);
+    background-color: var(--primary);
     color: white;
     border: none;
     padding: 10px 20px;

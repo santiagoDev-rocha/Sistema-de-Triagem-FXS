@@ -1,68 +1,72 @@
-function inicializarDashboard() {
-    const listaPacientes = JSON.parse(localStorage.getItem('pacientes_sxf')) || [];
-    const listaMedicos = JSON.parse(localStorage.getItem('medicos_sxf')) || []; 
-
-    const triagensReais = [];
-    listaPacientes.forEach(p => {
-        if (p.triagens && p.triagens > 0) {
-            triagensReais.push({
-                paciente: p.nome,
-                score: p.score || "0.00",
-                data: p.dataTriagem || "",
-                status: p.statusTriagem || "Monitorar"
-            });
-        }
-    });
-
-    const totalTriagens = triagensReais.length;
-    
-    document.getElementById('count-medicos').innerText = listaMedicos.length; 
-    document.getElementById('count-pacientes').innerText = listaPacientes.length; 
-    document.getElementById('count-triagens').innerText = totalTriagens; 
-    
-    const encaminhamentos = triagensReais.filter(t => t.status === "Encaminhar").length;
-    document.getElementById('count-encaminhamentos').innerText = encaminhamentos; 
-
-    const container = document.getElementById('evaluations-container');
-    const btnVerTodos = document.getElementById('btn-ver-todos');
+function renderizarAvaliacoes(diagnosticos, encaminhamentos) {
+    var container = document.getElementById('evaluations-container');
+    var btnVerTodos = document.getElementById('btn-ver-todos');
 
     if (!container) return;
 
-    if (totalTriagens === 0) {
+    if (diagnosticos.length === 0) {
         if (btnVerTodos) btnVerTodos.style.display = 'none';
-        container.innerHTML = `
-            <div class="empty-state">
-                <i data-lucide="clipboard-list"></i>
-                <p>Nenhuma avaliação realizada</p>
-            </div>
-        `;
+        container.innerHTML =
+            '<div class="empty-state">' +
+                '<i data-lucide="clipboard-list"></i>' +
+                '<p>Nenhuma avaliação realizada</p>' +
+            '</div>';
     } else {
         if (btnVerTodos) btnVerTodos.style.display = 'flex';
-        container.innerHTML = triagensReais.map(t => `
-            <div class="eval-row">
-                <div class="avatar-p">${t.paciente.charAt(0)}</div>
-                <div class="eval-info">
-                    <strong>${t.paciente}</strong>
-                    <span>Score: ${t.score} • ${t.data}</span>
-                </div>
-                <span class="badge-danger">${t.status}</span>
-            </div>
-            <div class="summary-cards">
-                <div class="mini-card red-soft">
-                    <i data-lucide="alert-circle"></i>
-                    <span><strong>${encaminhamentos}</strong> Encaminhar</span>
-                </div>
-                <div class="mini-card green-soft">
-                    <i data-lucide="check-circle"></i>
-                    <span><strong>${totalTriagens - encaminhamentos}</strong> Monitorar</span>
-                </div>
-            </div>
-        `).join('');
+        var ultimos = diagnosticos.slice(0, 5);
+        var html = '';
+        ultimos.forEach(function(d) {
+            var status = d.recomendacao ? 'Encaminhar' : 'Monitorar';
+            var badgeClass = d.recomendacao ? 'badge-danger' : 'badge-success';
+            var data = d.dataDiagnostico ? new Date(d.dataDiagnostico).toLocaleDateString('pt-BR') : '';
+            html +=
+                '<div class="eval-row">' +
+                    '<div class="avatar-p">' + (d.pacienteNome ? d.pacienteNome.charAt(0) : '?') + '</div>' +
+                    '<div class="eval-info">' +
+                        '<strong>' + (d.pacienteNome || 'Paciente') + '</strong>' +
+                        '<span>Score: ' + (d.score || '0.0000') + ' • ' + data + '</span>' +
+                    '</div>' +
+                    '<span class="' + badgeClass + '">' + status + '</span>' +
+                '</div>';
+        });
+        html +=
+            '<div class="summary-cards">' +
+                '<div class="mini-card red-soft">' +
+                    '<i data-lucide="alert-circle"></i>' +
+                    '<span><strong>' + encaminhamentos + '</strong> Encaminhar</span>' +
+                '</div>' +
+                '<div class="mini-card green-soft">' +
+                    '<i data-lucide="check-circle"></i>' +
+                    '<span><strong>' + (diagnosticos.length - encaminhamentos) + '</strong> Monitorar</span>' +
+                '</div>' +
+            '</div>';
+        container.innerHTML = html;
     }
 
-    if (window.lucide) {
-        window.lucide.createIcons();
-    }
+    if (window.lucide) lucide.createIcons();
 }
 
-document.addEventListener('DOMContentLoaded', inicializarDashboard);
+requireAuth(async function() {
+    try {
+        var resultados = await Promise.all([
+            api.listarFuncionarios(),
+            api.listarPacientes(),
+            api.listarDiagnosticos()
+        ]);
+
+        var funcionarios = resultados[0].data || [];
+        var pacientes = resultados[1].data || [];
+        var diagnosticos = resultados[2].data || [];
+
+        document.getElementById('count-medicos').innerText = funcionarios.length;
+        document.getElementById('count-pacientes').innerText = pacientes.length;
+        document.getElementById('count-triagens').innerText = diagnosticos.length;
+
+        var encaminhamentos = diagnosticos.filter(function(d) { return d.recomendacao === true; }).length;
+        document.getElementById('count-encaminhamentos').innerText = encaminhamentos;
+
+        renderizarAvaliacoes(diagnosticos, encaminhamentos);
+    } catch (err) {
+        console.error('Erro ao carregar dashboard:', err);
+    }
+});

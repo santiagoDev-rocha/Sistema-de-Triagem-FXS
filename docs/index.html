@@ -5,6 +5,9 @@
     <title>Sistema de Triagem FXS - Login</title>
     <link rel="stylesheet" href="./src/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-auth-compat.js"></script>
+    <script src="./src/js/api.js" defer></script>
     <script src="./src/js/script.js" defer></script>
 </head>
 <body>
@@ -12,13 +15,7 @@
     <div class="caixa_login">
         <div class="container">
             <div class="topo">
-                <div class="icone">
-                    <i class="fa-solid fa-layer-group"></i>
-                </div>
-                <div class="texto_topo">
-                    <h4 class="sub_topo">Sistema de Triagem</h4>
-                    <h3 class="principal_topo">SXF Brasil</h3>
-                </div>
+                <img src="./src/img/logo.png" alt="IBK Logo" class="logo-img">
             </div>
             
             <form id="login-form">
@@ -51,20 +48,4 @@
     </div>
     
 </body>
-<script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-auth-compat.js"></script>
-<script>
-    const firebaseConfig = {
-        //mudar para o firebase do projeto 
-        apiKey: "AIzaSyB3VogDgd3I2vYsbnC-S5jlukwaibH7jBo",
-        authDomain: "fir-pucpr-63196.firebaseapp.com",
-        projectId: "fir-pucpr-63196",
-        storageBucket: "fir-pucpr-63196.firebasestorage.app",
-        messagingSenderId: "779714684026",
-        appId: "1:779714684026:web:4ea2aa303297e249ae07c3",
-        measurementId: "G-QYP4JKXJ8T"
-    };
-    firebase.initializeApp(firebaseConfig);
-
-</script>
 </html>

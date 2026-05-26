@@ -1,111 +1,131 @@
-let listaPacientes = JSON.parse(localStorage.getItem('pacientes_sxf')) || [];
+var listaPacientes = [];
 
-const modal = document.getElementById('modal-paciente');
-const form = document.getElementById('form-cadastro');
-const containerLista = document.querySelector('.patients-list');
-const contadorTexto = document.getElementById('contador-pacientes');
-
-function renderizarPacientes() {
-    containerLista.innerHTML = ''; 
-    
-    if (listaPacientes.length === 0) {
-        containerLista.innerHTML = `
-            <div class="empty-warning">
-                <p>Nenhum paciente cadastrado no sistema.</p>
-            </div>
-        `;
-        contadorTexto.innerText = "0 pacientes cadastrados";
-        if (window.lucide) lucide.createIcons();
-        return; 
-    }
-
-    listaPacientes.forEach(paciente => {
-        const iniciais = paciente.nome.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-        const idade = calcularIdade(paciente.dataNasc);
-        const dataFormatada = new Date(paciente.dataNasc).toLocaleDateString('pt-BR');
-
-        const card = document.createElement('div');
-        card.className = 'patient-card';
-        card.innerHTML = `
-            <div class="patient-avatar">${iniciais}</div>
-            <div class="patient-info">
-                <div class="name-row">
-                    <strong>${paciente.nome}</strong>
-                    <span class="gender-tag ${paciente.sexo === 'M' ? 'male' : 'female'}">
-                        <i data-lucide="${paciente.sexo === 'M' ? 'mars' : 'venus'}"></i> 
-                        ${paciente.sexo === 'M' ? 'masculino' : 'feminino'}
-                    </span>
-                </div>
-                <div class="details-row">
-                    <span><i data-lucide="calendar"></i> ${idade} anos • ${dataFormatada}</span>
-                    <span><i data-lucide="fingerprint"></i> CPF: ${paciente.cpf || 'Não informado'}</span> <span><i data-lucide="user"></i> Resp: ${paciente.responsavel}</span>
-                    <span><i data-lucide="phone"></i> ${paciente.telefone}</span>
-                </div>
-            </div>
-            <div class="patient-stats">
-                <strong>${paciente.triagens}</strong>
-                <span>triagem</span>
-            </div>
-            <div class="patient-actions">
-                <button class="act-btn"><i data-lucide="clipboard-list"></i></button>
-                <button class="act-btn edit"><i data-lucide="edit-3"></i></button>
-                <button class="act-btn delete" onclick="excluirPaciente(${paciente.id})"><i data-lucide="trash-2"></i></button>
-            </div>
-        `;
-        containerLista.appendChild(card);
-    });
-
-    contadorTexto.innerText = `${listaPacientes.length} paciente${listaPacientes.length !== 1 ? 's' : ''} cadastrado${listaPacientes.length !== 1 ? 's' : ''}`;
-    
-    if (window.lucide) lucide.createIcons();
-}
-
-form.addEventListener('submit', (e) => {
-    e.preventDefault(); 
-
-    const novoPaciente = {
-        id: Date.now(), 
-        nome: form.querySelector('input[placeholder="Nome completo"]').value,
-        sexo: form.querySelector('input[name="sexo"]:checked').value,
-        dataNasc: form.querySelector('input[type="date"]').value,
-        cpf: document.getElementById('cpf-paciente').value,
-        responsavel: form.querySelector('input[placeholder="Nome do pai/mãe/responsável"]').value,
-        telefone: form.querySelector('input[placeholder="(41) 99999-9999"]').value,
-        triagens: 0
-    };
-
-    listaPacientes.push(novoPaciente);
-    localStorage.setItem('pacientes_sxf', JSON.stringify(listaPacientes));
-
-    modal.style.display = 'none';
-    form.reset();
-    
-    renderizarPacientes();
-});
+var modal = document.getElementById('modal-paciente');
+var form = document.getElementById('form-cadastro');
+var containerLista = document.querySelector('.patients-list');
+var contadorTexto = document.getElementById('contador-pacientes');
 
 function calcularIdade(dataNasc) {
-    const hoje = new Date();
-    const nascimento = new Date(dataNasc);
-    let idade = hoje.getFullYear() - nascimento.getFullYear();
-    const m = hoje.getMonth() - nascimento.getMonth();
+    var hoje = new Date();
+    var nascimento = new Date(dataNasc);
+    var idade = hoje.getFullYear() - nascimento.getFullYear();
+    var m = hoje.getMonth() - nascimento.getMonth();
     if (m < 0 || (m === 0 && hoje.getDate() < nascimento.getDate())) idade--;
     return idade;
 }
 
-function excluirPaciente(id) {
-    if (confirm('Tem certeza que deseja remover este paciente do sistema?')) {
-        listaPacientes = listaPacientes.filter(p => p.id !== id);
-        localStorage.setItem('pacientes_sxf', JSON.stringify(listaPacientes));
+function renderizarPacientes() {
+    containerLista.innerHTML = '';
+
+    if (listaPacientes.length === 0) {
+        containerLista.innerHTML =
+            '<div class="empty-warning">' +
+                '<p>Nenhum paciente cadastrado no sistema.</p>' +
+            '</div>';
+        contadorTexto.innerText = "0 pacientes cadastrados";
+        if (window.lucide) lucide.createIcons();
+        return;
+    }
+
+    listaPacientes.forEach(function(paciente) {
+        var nome = paciente.nomeCompleto || '';
+        var iniciais = nome.split(' ').map(function(n) { return n[0]; }).join('').substring(0, 2).toUpperCase();
+        var idade = paciente.dataNascimento ? calcularIdade(paciente.dataNascimento) : '?';
+        var dataFormatada = paciente.dataNascimento ? new Date(paciente.dataNascimento + 'T00:00:00').toLocaleDateString('pt-BR') : '';
+        var sexoLabel = paciente.sexo === 'MASCULINO' ? 'masculino' : 'feminino';
+        var sexoIcon = paciente.sexo === 'MASCULINO' ? 'mars' : 'venus';
+        var sexoClass = paciente.sexo === 'MASCULINO' ? 'male' : 'female';
+
+        var card = document.createElement('div');
+        card.className = 'patient-card';
+        card.innerHTML =
+            '<div class="patient-avatar">' + iniciais + '</div>' +
+            '<div class="patient-info">' +
+                '<div class="name-row">' +
+                    '<strong>' + nome + '</strong>' +
+                    '<span class="gender-tag ' + sexoClass + '">' +
+                        '<i data-lucide="' + sexoIcon + '"></i> ' + sexoLabel +
+                    '</span>' +
+                '</div>' +
+                '<div class="details-row">' +
+                    '<span><i data-lucide="calendar"></i> ' + idade + ' anos • ' + dataFormatada + '</span>' +
+                    '<span><i data-lucide="fingerprint"></i> CPF: ' + (paciente.cpf || 'Não informado') + '</span>' +
+                '</div>' +
+            '</div>' +
+            '<div class="patient-actions">' +
+                '<button class="act-btn delete" data-id="' + paciente.id + '"><i data-lucide="trash-2"></i></button>' +
+            '</div>';
+        containerLista.appendChild(card);
+    });
+
+    contadorTexto.innerText = listaPacientes.length + ' paciente' + (listaPacientes.length !== 1 ? 's' : '') + ' cadastrado' + (listaPacientes.length !== 1 ? 's' : '');
+
+    if (window.lucide) lucide.createIcons();
+
+    document.querySelectorAll('.act-btn.delete').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            desativarPaciente(this.getAttribute('data-id'));
+        });
+    });
+}
+
+async function carregarPacientes() {
+    try {
+        var res = await api.listarPacientes();
+        listaPacientes = res.data || [];
         renderizarPacientes();
+    } catch (err) {
+        console.error('Erro ao carregar pacientes:', err);
     }
 }
 
-document.getElementById('btn-abrir-modal').addEventListener('click', () => modal.style.display = 'flex');
-document.getElementById('btn-fechar').addEventListener('click', () => modal.style.display = 'none');
-document.getElementById('btn-cancelar').addEventListener('click', () => modal.style.display = 'none');
+form.addEventListener('submit', async function(e) {
+    e.preventDefault();
 
-window.addEventListener('click', (e) => {
+    var sexoRadio = form.querySelector('input[name="sexo"]:checked');
+    var sexoValue = sexoRadio ? sexoRadio.value : null;
+    var sexoBackend = sexoValue === 'M' ? 'MASCULINO' : 'FEMININO';
+
+    var cpfLimpo = document.getElementById('cpf-paciente').value.replace(/\D/g, '');
+
+    var body = {
+        nomeCompleto: document.getElementById('nome-paciente').value,
+        cpf: cpfLimpo,
+        dataNascimento: document.getElementById('data-nascimento-paciente').value,
+        sexo: sexoBackend,
+        responsavelNome: document.getElementById('responsavel-nome').value,
+        telefone: document.getElementById('responsavel-telefone').value,
+        responsavelParentesco: document.getElementById('parentesco-responsavel').value
+    };
+
+    try {
+        await api.cadastrarPaciente(body);
+        modal.style.display = 'none';
+        form.reset();
+        await carregarPacientes();
+    } catch (err) {
+        alert(err.message || 'Erro ao cadastrar paciente.');
+    }
+});
+
+async function desativarPaciente(id) {
+    if (!confirm('Tem certeza que deseja desativar este paciente?')) return;
+    try {
+        await api.desativarPaciente(id);
+        await carregarPacientes();
+    } catch (err) {
+        alert(err.message || 'Erro ao desativar paciente.');
+    }
+}
+
+document.getElementById('btn-abrir-modal').addEventListener('click', function() { modal.style.display = 'flex'; });
+document.getElementById('btn-fechar').addEventListener('click', function() { modal.style.display = 'none'; });
+document.getElementById('btn-cancelar').addEventListener('click', function() { modal.style.display = 'none'; });
+
+window.addEventListener('click', function(e) {
     if (e.target === modal) modal.style.display = 'none';
 });
 
-document.addEventListener('DOMContentLoaded', renderizarPacientes);
+requireAuth(function() {
+    carregarPacientes();
+});
