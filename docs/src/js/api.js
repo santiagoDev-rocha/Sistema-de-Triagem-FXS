@@ -20,6 +20,13 @@ async function getToken() {
     return user.getIdToken();
 }
 
+async function getUserRole() {
+    var user = firebase.auth().currentUser;
+    if (!user) return null;
+    var result = await user.getIdTokenResult();
+    return result.claims.role || null;
+}
+
 async function apiRequest(method, path, body) {
     var token = await getToken();
     var options = {
@@ -49,6 +56,7 @@ var api = {
     listarPacientes:       function() { return this.get('/pacientes/return/all'); },
     cadastrarPaciente:     function(body) { return this.post('/pacientes/register', body); },
     desativarPaciente:     function(id) { return this.patch('/pacientes/desativar/' + id); },
+    associarPaciente:      function(cpf) { return this.post('/funcionariopaciente/associar/' + cpf); },
 
     listarDiagnosticos:    function() { return this.get('/diagnosticos/return/all'); }
 };
@@ -60,6 +68,17 @@ function requireAuth(callback) {
             return;
         }
         callback(user);
+    });
+}
+
+function requireAuthWithRole(callback) {
+    firebase.auth().onAuthStateChanged(async function(user) {
+        if (!user) {
+            window.location.href = '../../index.html';
+            return;
+        }
+        var role = await getUserRole();
+        callback(user, role);
     });
 }
 
