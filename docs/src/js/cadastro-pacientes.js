@@ -14,7 +14,7 @@ function calcularIdade(dataNasc) {
     return idade;
 }
 
-function renderizarPacientes() {
+function renderizarPacientes(role) {
     containerLista.innerHTML = '';
 
     if (listaPacientes.length === 0) {
@@ -52,9 +52,11 @@ function renderizarPacientes() {
                     '<span><i data-lucide="fingerprint"></i> CPF: ' + (paciente.cpf || 'Não informado') + '</span>' +
                 '</div>' +
             '</div>' +
-            '<div class="patient-actions">' +
-                '<button class="act-btn delete" data-id="' + paciente.id + '"><i data-lucide="trash-2"></i></button>' +
-            '</div>';
+            (role === 'ADMIN'
+                ? '<div class="patient-actions">' +
+                      '<button class="act-btn delete" data-id="' + paciente.id + '"><i data-lucide="trash-2"></i></button>' +
+                  '</div>'
+                : '');
         containerLista.appendChild(card);
     });
 
@@ -69,11 +71,11 @@ function renderizarPacientes() {
     });
 }
 
-async function carregarPacientes() {
+async function carregarPacientes(role) {
     try {
         var res = await api.listarPacientes();
         listaPacientes = res.data || [];
-        renderizarPacientes();
+        renderizarPacientes(role);
     } catch (err) {
         console.error('Erro ao carregar pacientes:', err);
     }
@@ -102,7 +104,7 @@ form.addEventListener('submit', async function(e) {
         await api.cadastrarPaciente(body);
         modal.style.display = 'none';
         form.reset();
-        await carregarPacientes();
+        await carregarPacientes('ADMIN');
     } catch (err) {
         alert(err.message || 'Erro ao cadastrar paciente.');
     }
@@ -112,7 +114,7 @@ async function desativarPaciente(id) {
     if (!confirm('Tem certeza que deseja desativar este paciente?')) return;
     try {
         await api.desativarPaciente(id);
-        await carregarPacientes();
+        await carregarPacientes('ADMIN');
     } catch (err) {
         alert(err.message || 'Erro ao desativar paciente.');
     }
@@ -126,6 +128,44 @@ window.addEventListener('click', function(e) {
     if (e.target === modal) modal.style.display = 'none';
 });
 
-requireAuth(function() {
-    carregarPacientes();
+var modalAssociar = document.getElementById('modal-associar');
+var formAssociar = document.getElementById('form-associar');
+
+document.getElementById('btn-abrir-associar').addEventListener('click', function() {
+    modalAssociar.style.display = 'flex';
+    if (window.lucide) lucide.createIcons();
+});
+document.getElementById('btn-fechar-associar').addEventListener('click', function() {
+    modalAssociar.style.display = 'none';
+});
+document.getElementById('btn-cancelar-associar').addEventListener('click', function() {
+    modalAssociar.style.display = 'none';
+});
+
+window.addEventListener('click', function(e) {
+    if (e.target === modalAssociar) modalAssociar.style.display = 'none';
+});
+
+formAssociar.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var cpf = document.getElementById('cpf-associar').value.replace(/\D/g, '');
+    try {
+        await api.associarPaciente(cpf);
+        modalAssociar.style.display = 'none';
+        formAssociar.reset();
+        await carregarPacientes('MEDICO');
+    } catch (err) {
+        alert(err.message || 'Erro ao associar paciente. Verifique o CPF.');
+    }
+});
+
+requireAuthWithRole(function(user, role) {
+    if (role === 'MEDICO') {
+        document.querySelectorAll('[data-admin-only]').forEach(function(el) {
+            el.style.display = 'none';
+        });
+        var btnAssociar = document.getElementById('btn-abrir-associar');
+        if (btnAssociar) btnAssociar.style.display = '';
+    }
+    carregarPacientes(role);
 });
