@@ -120,6 +120,10 @@ window.addEventListener('click', function(e) {
     if (e.target === modal) modal.style.display = 'none';
 });
 
-requireAuth(function() {
+requireAuthWithRole(function(user, role) {
+    if (role === 'MEDICO') {
+        window.location.href = './home.html';
+        return;
+    }
     carregarMedicos();
 });
