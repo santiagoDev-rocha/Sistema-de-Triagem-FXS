@@ -20,7 +20,7 @@
             <nav>
                 <a href="#" class="active"><i data-lucide="home"></i> Início</a>
                 <a href="#"><i data-lucide="info"></i> Sobre a FXS</a>
-                <a href="./cadastro-medicos.html"><i data-lucide="user-plus"></i> Cadastro de Médicos</a>
+                <a href="./cadastro-medicos.html" data-admin-only><i data-lucide="user-plus"></i> Cadastro de Médicos</a>
                 <a href="./cadastro-pacientes.html"><i data-lucide="user"></i> Cadastro de Pacientes</a>
                 <a href="#"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
                 <a href="#"><i data-lucide="bar-chart-3"></i> Resultados</a>
@@ -51,7 +51,7 @@
             </div>
 
             <div class="stats-grid">
-                <div class="card stat-card green-bg">
+                <div class="card stat-card green-bg" data-admin-only>
                     <div class="icon-box green-icon"><i data-lucide="user-cog"></i></div>
                     <h2 id="count-medicos">0</h2>
                     <p>Médicos Cadastrados</p>
@@ -89,7 +89,7 @@
                                 <i data-lucide="chevron-right" class="chevron"></i>
                             </a>
                         </li>
-                        <li>
+                        <li data-admin-only>
                             <a href="./cadastro-medicos.html">
                                 <div class="action-icon-bg purple-soft"><i data-lucide="stethoscope"></i></div>
                                 <div class="action-text"><strong>Cadastrar Médico</strong><span>Adicionar novo profissional</span></div>
