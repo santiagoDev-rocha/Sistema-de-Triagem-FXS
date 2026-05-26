@@ -154,7 +154,7 @@ formAssociar.addEventListener('submit', async function(e) {
         await api.associarPaciente(cpf);
         modalAssociar.style.display = 'none';
         formAssociar.reset();
-        await carregarPacientes('MEDICO');
+        await carregarPacientes(currentRole);
     } catch (err) {
         alert(err.message || 'Erro ao associar paciente. Verifique o CPF.');
     }
