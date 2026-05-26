@@ -4,6 +4,7 @@ var modal = document.getElementById('modal-paciente');
 var form = document.getElementById('form-cadastro');
 var containerLista = document.querySelector('.patients-list');
 var contadorTexto = document.getElementById('contador-pacientes');
+var currentRole = null;
 
 function calcularIdade(dataNasc) {
     var hoje = new Date();
@@ -104,7 +105,7 @@ form.addEventListener('submit', async function(e) {
         await api.cadastrarPaciente(body);
         modal.style.display = 'none';
         form.reset();
-        await carregarPacientes('ADMIN');
+        await carregarPacientes(currentRole);
     } catch (err) {
         alert(err.message || 'Erro ao cadastrar paciente.');
     }
@@ -114,7 +115,7 @@ async function desativarPaciente(id) {
     if (!confirm('Tem certeza que deseja desativar este paciente?')) return;
     try {
         await api.desativarPaciente(id);
-        await carregarPacientes('ADMIN');
+        await carregarPacientes(currentRole);
     } catch (err) {
         alert(err.message || 'Erro ao desativar paciente.');
     }
@@ -160,6 +161,7 @@ formAssociar.addEventListener('submit', async function(e) {
 });
 
 requireAuthWithRole(function(user, role) {
+    currentRole = role;
     if (role === 'MEDICO') {
         document.querySelectorAll('[data-admin-only]').forEach(function(el) {
             el.style.display = 'none';
