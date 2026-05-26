@@ -20,7 +20,7 @@
             <nav>
                 <a href="./home.html"><i data-lucide="home"></i> Início</a>
                 <a href="#"><i data-lucide="info"></i> Sobre a FXS</a>
-                <a href="./cadastro-medicos.html"><i data-lucide="user-plus"></i> Cadastro de Médicos</a>
+                <a href="./cadastro-medicos.html" data-admin-only><i data-lucide="user-plus"></i> Cadastro de Médicos</a>
                 <a href="#" class="active"><i data-lucide="users"></i> Cadastro de Pacientes</a>
                 <a href="#"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
                 <a href="#"><i data-lucide="bar-chart-3"></i> Resultados</a>
@@ -42,9 +42,14 @@
                     <h1>Cadastro de Pacientes</h1>
                     <p id="contador-pacientes">0 pacientes cadastrados</p>
                 </div>
-                <button id="btn-abrir-modal" class="btn-novo">
-                    <i data-lucide="plus"></i> Novo Paciente
-                </button>
+                <div class="page-header-actions">
+                    <button id="btn-abrir-associar" class="btn-secundario" data-medico-only style="display:none">
+                        <i data-lucide="link"></i> Associar Paciente
+                    </button>
+                    <button id="btn-abrir-modal" class="btn-novo">
+                        <i data-lucide="plus"></i> Novo Paciente
+                    </button>
+                </div>
             </section>
 
             <div class="filter-bar">
@@ -130,6 +135,28 @@
                 <div class="modal-footer">
                     <button type="button" id="btn-cancelar" class="btn-cancel">Cancelar</button>
                     <button type="submit" class="btn-save"><i data-lucide="check"></i> Cadastrar Paciente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-associar" class="modal-overlay">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h3><i data-lucide="link"></i> Associar Paciente Existente</h3>
+                <button id="btn-fechar-associar" class="close-x">&times;</button>
+            </header>
+            <form id="form-associar">
+                <div class="form-group full">
+                    <label>CPF do Paciente *</label>
+                    <input type="text" id="cpf-associar" placeholder="000.000.000-00" required>
+                </div>
+                <p class="obs" style="margin-top: 8px; font-size: 0.85rem; color: #666;">
+                    O paciente deve estar cadastrado no sistema. Informe o CPF para vinculá-lo à sua conta.
+                </p>
+                <div class="modal-footer">
+                    <button type="button" id="btn-cancelar-associar" class="btn-cancel">Cancelar</button>
+                    <button type="submit" class="btn-save"><i data-lucide="check"></i> Associar</button>
                 </div>
             </form>
         </div>
