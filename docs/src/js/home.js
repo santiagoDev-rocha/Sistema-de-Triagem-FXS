@@ -46,19 +46,26 @@ function renderizarAvaliacoes(diagnosticos, encaminhamentos) {
     if (window.lucide) lucide.createIcons();
 }
 
-requireAuth(async function() {
+requireAuthWithRole(async function(user, role) {
+    if (role === 'MEDICO') {
+        document.querySelectorAll('[data-admin-only]').forEach(function(el) {
+            el.style.display = 'none';
+        });
+    }
+
     try {
-        var resultados = await Promise.all([
-            api.listarFuncionarios(),
-            api.listarPacientes(),
-            api.listarDiagnosticos()
-        ]);
+        var promises = [api.listarPacientes(), api.listarDiagnosticos()];
+        if (role === 'ADMIN') promises.unshift(api.listarFuncionarios());
 
-        var funcionarios = resultados[0].data || [];
-        var pacientes = resultados[1].data || [];
-        var diagnosticos = resultados[2].data || [];
+        var resultados = await Promise.all(promises);
 
-        document.getElementById('count-medicos').innerText = funcionarios.length;
+        var funcionarios = role === 'ADMIN' ? (resultados[0].data || []) : [];
+        var pacientes = (role === 'ADMIN' ? resultados[1] : resultados[0]).data || [];
+        var diagnosticos = (role === 'ADMIN' ? resultados[2] : resultados[1]).data || [];
+
+        if (role === 'ADMIN') {
+            document.getElementById('count-medicos').innerText = funcionarios.length;
+        }
         document.getElementById('count-pacientes').innerText = pacientes.length;
         document.getElementById('count-triagens').innerText = diagnosticos.length;
 
