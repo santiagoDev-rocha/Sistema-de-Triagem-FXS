@@ -6,6 +6,4 @@ requireAuthWithRole(function(user, role) {
     }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    if (window.lucide) lucide.createIcons();
-});
+if (window.lucide) lucide.createIcons();

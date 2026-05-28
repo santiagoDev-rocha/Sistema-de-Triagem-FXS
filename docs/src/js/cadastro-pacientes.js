@@ -232,6 +232,9 @@ document.getElementById('busca-paciente').addEventListener('input', async functi
         } catch(e) {
             listaPacientes = [];
         }
+    } else if (cpfLimpo.length === 0) {
+        await carregarPacientes(currentRole);
+        return;
     }
     renderizarPacientes(currentRole);
 });

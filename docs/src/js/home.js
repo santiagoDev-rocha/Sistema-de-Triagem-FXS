@@ -24,7 +24,7 @@ function renderizarAvaliacoes(diagnosticos, encaminhamentos) {
                     '<div class="avatar-p">' + (d.pacienteNome ? d.pacienteNome.charAt(0) : '?') + '</div>' +
                     '<div class="eval-info">' +
                         '<strong>' + (d.pacienteNome || 'Paciente') + '</strong>' +
-                        '<span>Score: ' + (d.score || '0.0000') + ' • ' + data + '</span>' +
+                        '<span>Score: ' + (d.score != null ? parseFloat(d.score).toFixed(4) : '0.0000') + ' • ' + data + '</span>' +
                     '</div>' +
                     '<span class="' + badgeClass + '">' + status + '</span>' +
                 '</div>';

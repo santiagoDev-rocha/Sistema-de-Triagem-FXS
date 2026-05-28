@@ -204,7 +204,7 @@ function recalcularScoreEdicao() {
     var limiar = isFeminino ? LIMIAR_FEMININO : LIMIAR_MASCULINO;
     var score = 0;
 
-    document.querySelectorAll('.edit-checklist input[type="checkbox"]').forEach(function(cb) {
+    document.getElementById('modal-editar').querySelectorAll('.edit-checklist input[type="checkbox"]').forEach(function(cb) {
         if (cb.checked) score += pesos[cb.getAttribute('data-key')] || 0;
     });
 
