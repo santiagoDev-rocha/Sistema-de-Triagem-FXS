@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre a FXS - FXS</title>
+    <link rel="stylesheet" href="./../css/sobre-fxs.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-auth-compat.js"></script>
+    <script src="./../js/api.js" defer></script>
+    <script src="./../js/sobre-fxs.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="./../img/logo.png" alt="IBK Logo" class="logo-img">
+            </div>
+            <nav>
+                <a href="./home.html"><i data-lucide="home"></i> Início</a>
+                <a href="./sobre-fxs.html" class="active"><i data-lucide="info"></i> Sobre a FXS</a>
+                <a href="./cadastro-medicos.html" data-admin-only><i data-lucide="user-plus"></i> Cadastro de Médicos</a>
+                <a href="./cadastro-pacientes.html"><i data-lucide="users"></i> Cadastro de Pacientes</a>
+                <a href="./triagem.html"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
+                <a href="./resultados.html"><i data-lucide="bar-chart-3"></i> Resultados</a>
+                <a href="./associacoes.html" data-admin-only><i data-lucide="link"></i> Associações</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="./perfil.html" class="perfil-link"><i data-lucide="user"></i> Meu Perfil</a>
+                <a href="#" onclick="logout(); return false;" class="logout-link"><i data-lucide="log-out"></i> Sair</a>
+                <p>PUCPR • Instituto Buko Kaesemodel</p>
+                <p>v1.0.0 - 2025</p>
+            </div>
+        </aside>
+
+        <main class="content">
+            <header class="breadcrumb">
+                FXS Brasil > <span>Sobre a FXS</span>
+            </header>
+
+            <section class="page-header">
+                <h1>Síndrome do X Frágil</h1>
+                <p>Informações clínicas e epidemiológicas sobre a condição e este sistema de triagem</p>
+            </section>
+
+            <!-- Seção 1: O que é -->
+            <div class="info-card">
+                <div class="info-card-header">
+                    <div class="info-icon blue-icon"><i data-lucide="dna"></i></div>
+                    <h2>O que é a Síndrome do X Frágil</h2>
+                </div>
+                <div class="info-card-body">
+                    <p>A Síndrome do X Frágil (SXF) é a causa hereditária mais comum de deficiência intelectual e a segunda causa genética mais frequente, depois da Síndrome de Down. É causada por uma mutação no gene <strong>FMR1</strong>, localizado no cromossomo X, responsável pela produção da proteína FMRP, essencial para o desenvolvimento neurológico.</p>
+                    <p>A mutação consiste em uma expansão de repetições do trinucleotídeo <strong>CGG</strong> na região promotora do gene FMR1:</p>
+                    <div class="allele-table">
+                        <div class="allele-row header-row">
+                            <span>Classificação</span>
+                            <span>Repetições CGG</span>
+                            <span>Implicação</span>
+                        </div>
+                        <div class="allele-row">
+                            <span>Normal</span>
+                            <span>&lt; 45</span>
+                            <span>Sem risco</span>
+                        </div>
+                        <div class="allele-row">
+                            <span>Zona cinza</span>
+                            <span>45 – 54</span>
+                            <span>Risco indeterminado</span>
+                        </div>
+                        <div class="allele-row warning-row">
+                            <span>Pré-mutação</span>
+                            <span>55 – 200</span>
+                            <span>Portador — risco de transmissão</span>
+                        </div>
+                        <div class="allele-row danger-row">
+                            <span>Mutação completa</span>
+                            <span>&gt; 200</span>
+                            <span>Síndrome do X Frágil</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção 2: Prevalência -->
+            <div class="info-card">
+                <div class="info-card-header">
+                    <div class="info-icon orange-icon"><i data-lucide="globe"></i></div>
+                    <h2>Prevalência e Cenário Brasileiro</h2>
+                </div>
+                <div class="info-card-body">
+                    <div class="stats-callout-grid">
+                        <div class="stat-callout">
+                            <span class="stat-number">1:4.000</span>
+                            <span class="stat-desc">Homens afetados</span>
+                        </div>
+                        <div class="stat-callout">
+                            <span class="stat-number">1:8.000</span>
+                            <span class="stat-desc">Mulheres afetadas</span>
+                        </div>
+                        <div class="stat-callout">
+                            <span class="stat-number">1:250</span>
+                            <span class="stat-desc">Mulheres portadoras</span>
+                        </div>
+                    </div>
+                    <p>No Brasil, estima-se que existam mais de <strong>50.000 pessoas</strong> afetadas pela SXF, mas a grande maioria permanece sem diagnóstico. O acesso a testes genéticos específicos pelo Sistema Único de Saúde (SUS) é extremamente limitado, e muitos pacientes percorrem anos de investigação clínica até receberem o diagnóstico correto.</p>
+                    <p>O subdiagnóstico é um problema crítico: crianças com SXF frequentemente são diagnosticadas primeiramente com Transtorno do Espectro Autista (TEA) ou Transtorno do Déficit de Atenção e Hiperatividade (TDAH), retardando o acesso a suporte especializado.</p>
+                </div>
+            </div>
+
+            <!-- Seção 3: Sintomas -->
+            <div class="info-card">
+                <div class="info-card-header">
+                    <div class="info-icon purple-icon"><i data-lucide="stethoscope"></i></div>
+                    <h2>Sintomas e Manifestações Clínicas</h2>
+                </div>
+                <div class="info-card-body">
+                    <p>As manifestações clínicas variam conforme o sexo. Homens com mutação completa apresentam fenótipo mais expressivo; mulheres, por terem dois cromossomos X, frequentemente apresentam sintomas mais leves.</p>
+                    <div class="sintomas-grid">
+                        <div class="sintoma-card">
+                            <div class="sintoma-icon"><i data-lucide="brain"></i></div>
+                            <div class="sintoma-info">
+                                <strong>Deficiência intelectual</strong>
+                                <span>♂ Peso 0,32 | ♀ Peso 0,20</span>
+                            </div>
+                        </div>
+                        <div class="sintoma-card">
+                            <div class="sintoma-icon"><i data-lucide="scan-face"></i></div>
+                            <div class="sintoma-info">
+                                <strong>Face alongada / orelhas de abano</strong>
+                                <span>♂ Peso 0,29 | ♀ Peso 0,09</span>
+                            </div>
+                        </div>
+                        <div class="sintoma-card male-only">
+                            <div class="sintoma-icon"><i data-lucide="circle-dot"></i></div>
+                            <div class="sintoma-info">
+                                <strong>Macroorquidismo</strong>
+                                <span>♂ Peso 0,26 | Exclusivo masculino</span>
+                            </div>
+                        </div>
+                        <div class="sintoma-card">
+                            <div class="sintoma-icon"><i data-lucide="hand"></i></div>
+                            <div class="sintoma-info">
+                                <strong>Hipermobilidade articular</strong>
+                                <span>♂ Peso 0,19 | ♀ Peso 0,04</span>
+                            </div>
+                        </div>
+                        <div class="sintoma-card">
+                            <div class="sintoma-icon"><i data-lucide="book-open"></i></div>
+                            <div class="sintoma-info">
+                                <strong>Dificuldades de aprendizagem</strong>
+                                <span>♂ Peso 0,18 | ♀ Peso 0,28</span>
+                            </div>
+                        </div>
+                        <div class="sintoma-card">
+                            <div class="sintoma-icon"><i data-lucide="zap"></i></div>
+                            <div class="sintoma-info">
+                                <strong>Déficit de atenção</strong>
+                                <span>♂ Peso 0,17 | ♀ Peso 0,12</span>
+                            </div>
+                        </div>
+                        <div class="sintoma-card">
+                            <div class="sintoma-icon"><i data-lucide="repeat"></i></div>
+                            <div class="sintoma-info">
+                                <strong>Movimentos repetitivos</strong>
+                                <span>♂ Peso 0,17 | ♀ Peso 0,05</span>
+                            </div>
+                        </div>
+                        <div class="sintoma-card">
+                            <div class="sintoma-icon"><i data-lucide="message-circle"></i></div>
+                            <div class="sintoma-info">
+                                <strong>Atraso na fala</strong>
+                                <span>♂ Peso 0,14 | ♀ Peso 0,01</span>
+                            </div>
+                        </div>
+                        <div class="sintoma-card">
+                            <div class="sintoma-icon"><i data-lucide="activity"></i></div>
+                            <div class="sintoma-info">
+                                <strong>Hiperatividade</strong>
+                                <span>♂ Peso 0,12 | ♀ Peso 0,04</span>
+                            </div>
+                        </div>
+                        <div class="sintoma-card">
+                            <div class="sintoma-icon"><i data-lucide="eye-off"></i></div>
+                            <div class="sintoma-info">
+                                <strong>Evita contato visual</strong>
+                                <span>♂ Peso 0,06 | ♀ Peso 0,08</span>
+                            </div>
+                        </div>
+                        <div class="sintoma-card">
+                            <div class="sintoma-icon"><i data-lucide="shield-off"></i></div>
+                            <div class="sintoma-info">
+                                <strong>Evita contato físico</strong>
+                                <span>♂ Peso 0,04 | ♀ Peso 0,07</span>
+                            </div>
+                        </div>
+                        <div class="sintoma-card">
+                            <div class="sintoma-icon"><i data-lucide="alert-triangle"></i></div>
+                            <div class="sintoma-info">
+                                <strong>Agressividade</strong>
+                                <span>♂ Peso 0,01 | ♀ Peso 0,02</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção 4: Sobre o sistema -->
+            <div class="info-card">
+                <div class="info-card-header">
+                    <div class="info-icon green-icon"><i data-lucide="cpu"></i></div>
+                    <h2>Sobre Este Sistema de Triagem</h2>
+                </div>
+                <div class="info-card-body">
+                    <p>Este sistema utiliza um modelo de Machine Learning (Random Forest) treinado e validado em dados clínicos reais para apoiar a triagem da SXF. O modelo foi desenvolvido com base em pesquisa aplicada realizada no Instituto Buko Kaesemodel (IBK), vinculado à PUCPR.</p>
+                    <div class="stats-callout-grid">
+                        <div class="stat-callout green-callout">
+                            <span class="stat-number">419</span>
+                            <span class="stat-desc">Pacientes na coorte</span>
+                        </div>
+                        <div class="stat-callout green-callout">
+                            <span class="stat-number">95%</span>
+                            <span class="stat-desc">Sensibilidade</span>
+                        </div>
+                        <div class="stat-callout green-callout">
+                            <span class="stat-number">&gt; 0,70</span>
+                            <span class="stat-desc">AUC (Área sob a curva ROC)</span>
+                        </div>
+                    </div>
+                    <p>O algoritmo calcula um <strong>score de risco ponderado</strong> com base nos 12 sintomas clínicos observados. Cada sintoma possui um peso específico derivado do modelo Random Forest, refletindo sua importância relativa para a predição da SXF. Um score acima do limiar de corte (≥ 0,56 para homens; ≥ 0,55 para mulheres) indica recomendação de encaminhamento para teste genético confirmatório.</p>
+                    <div class="disclaimer-box">
+                        <i data-lucide="info"></i>
+                        <p><strong>Importante:</strong> Este sistema é uma ferramenta de <em>apoio à decisão clínica</em> e não substitui a avaliação médica. O resultado da triagem deve ser interpretado pelo profissional de saúde responsável.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
