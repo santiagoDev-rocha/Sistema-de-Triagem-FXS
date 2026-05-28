@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - FXS</title>
+    <link rel="stylesheet" href="./../css/perfil.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-auth-compat.js"></script>
+    <script src="./../js/api.js" defer></script>
+    <script src="./../js/perfil.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="./../img/logo.png" alt="IBK Logo" class="logo-img">
+            </div>
+            <nav>
+                <a href="./home.html"><i data-lucide="home"></i> Início</a>
+                <a href="./sobre-fxs.html"><i data-lucide="info"></i> Sobre a FXS</a>
+                <a href="./cadastro-medicos.html" data-admin-only><i data-lucide="user-plus"></i> Cadastro de Médicos</a>
+                <a href="./cadastro-pacientes.html"><i data-lucide="users"></i> Cadastro de Pacientes</a>
+                <a href="./triagem.html"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
+                <a href="./resultados.html"><i data-lucide="bar-chart-3"></i> Resultados</a>
+                <a href="./associacoes.html" data-admin-only><i data-lucide="link"></i> Associações</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" class="perfil-link active"><i data-lucide="user"></i> Meu Perfil</a>
+                <a href="#" onclick="logout(); return false;" class="logout-link"><i data-lucide="log-out"></i> Sair</a>
+                <p>PUCPR • Instituto Buko Kaesemodel</p>
+                <p>v1.0.0 - 2025</p>
+            </div>
+        </aside>
+
+        <main class="content">
+            <header class="breadcrumb">
+                FXS Brasil > <span>Meu Perfil</span>
+            </header>
+
+            <section class="page-header">
+                <h1>Meu Perfil</h1>
+                <p>Gerencie suas informações pessoais</p>
+            </section>
+
+            <div class="card">
+                <form id="form-perfil">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nome Completo *</label>
+                            <input type="text" id="perfil-nome" required>
+                        </div>
+                        <div class="form-group">
+                            <label>E-mail</label>
+                            <input type="email" id="perfil-email" readonly class="readonly-field">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>CPF</label>
+                            <input type="text" id="perfil-cpf" readonly class="readonly-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Telefone</label>
+                            <input type="text" id="perfil-telefone">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Data de Nascimento</label>
+                            <input type="date" id="perfil-data-nascimento">
+                        </div>
+                        <div class="form-group">
+                            <label>Função</label>
+                            <div class="role-display">
+                                <span id="perfil-role" class="role-badge">-</span>
+                                <small class="readonly-hint">Não editável</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Data de Cadastro</label>
+                            <div class="readonly-text" id="perfil-data-cadastro">-</div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-save"><i data-lucide="save"></i> Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
