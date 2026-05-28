@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Triagem - FXS</title>
+    <link rel="stylesheet" href="./../css/triagem.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-auth-compat.js"></script>
+    <script src="./../js/api.js" defer></script>
+    <script src="./../js/triagem.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="./../img/logo.png" alt="IBK Logo" class="logo-img">
+            </div>
+            <nav>
+                <a href="./home.html"><i data-lucide="home"></i> Início</a>
+                <a href="./sobre-fxs.html"><i data-lucide="info"></i> Sobre a FXS</a>
+                <a href="./cadastro-medicos.html" data-admin-only><i data-lucide="user-plus"></i> Cadastro de Médicos</a>
+                <a href="./cadastro-pacientes.html"><i data-lucide="users"></i> Cadastro de Pacientes</a>
+                <a href="#" class="active"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
+                <a href="./resultados.html"><i data-lucide="bar-chart-3"></i> Resultados</a>
+                <a href="./associacoes.html" data-admin-only><i data-lucide="link"></i> Associações</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="./perfil.html" class="perfil-link"><i data-lucide="user"></i> Meu Perfil</a>
+                <a href="#" onclick="logout(); return false;" class="logout-link"><i data-lucide="log-out"></i> Sair</a>
+                <p>PUCPR • Instituto Buko Kaesemodel</p>
+                <p>v1.0.0 - 2025</p>
+            </div>
+        </aside>
+
+        <main class="content">
+            <header class="breadcrumb">
+                FXS Brasil > <span>Formulário de Triagem</span>
+            </header>
+
+            <section class="page-header">
+                <h1>Formulário de Triagem FXS</h1>
+                <p>Checklist clínico para triagem populacional da Síndrome do X Frágil</p>
+            </section>
+
+            <!-- PASSO 1: Selecionar paciente -->
+            <div id="passo-1">
+                <div class="card passo-card">
+                    <h3><i data-lucide="user"></i> Passo 1 — Selecionar Paciente</h3>
+                    <div class="select-paciente-area">
+                        <div class="search-input">
+                            <i data-lucide="search"></i>
+                            <input type="text" id="busca-paciente" placeholder="Buscar paciente por nome...">
+                        </div>
+                        <div id="lista-pacientes-dropdown" class="dropdown-list"></div>
+                    </div>
+                    <div id="paciente-selecionado" class="paciente-mini-card" style="display:none">
+                        <div class="avatar-p" id="paciente-avatar"></div>
+                        <div class="paciente-mini-info">
+                            <strong id="paciente-nome"></strong>
+                            <span id="paciente-detalhes"></span>
+                        </div>
+                        <button id="btn-trocar-paciente" class="btn-secundario">Trocar</button>
+                    </div>
+                    <button id="btn-iniciar" class="btn-novo" disabled>
+                        <i data-lucide="clipboard-check"></i> Iniciar Avaliação
+                    </button>
+                </div>
+            </div>
+
+            <!-- PASSO 2: Checklist + Score -->
+            <div id="passo-2" style="display:none">
+                <div class="triagem-grid">
+                    <div class="card checklist-card">
+                        <h3><i data-lucide="clipboard-list"></i> Checklist de Sintomas</h3>
+                        <p class="checklist-subtitle">Marque os sintomas observados no paciente</p>
+                        <div id="checklist-container"></div>
+                    </div>
+
+                    <div class="card score-card">
+                        <h3><i data-lucide="activity"></i> Resultado da Triagem</h3>
+                        <div class="score-display">
+                            <span class="score-value" id="score-valor">0.0000</span>
+                            <span class="score-label">Score</span>
+                        </div>
+                        <div class="score-bar-container">
+                            <div class="score-bar" id="score-bar"></div>
+                            <div class="score-threshold" id="score-threshold"></div>
+                        </div>
+                        <div class="limiar-info" id="limiar-info">
+                            Limiar: <strong id="limiar-valor">0.00</strong>
+                        </div>
+                        <div id="resultado-badge" class="resultado-badge monitorar">
+                            <i data-lucide="check-circle"></i> Monitorar
+                        </div>
+                        <button id="btn-salvar" class="btn-save">
+                            <i data-lucide="save"></i> Salvar Avaliação
+                        </button>
+                        <button id="btn-voltar" class="btn-secundario btn-voltar-triagem">
+                            <i data-lucide="arrow-left"></i> Voltar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
