@@ -16,12 +16,14 @@ function filtrarAssociacoes() {
         if (filtroStatus === 'ativos' && a.ativo === false) return false;
         if (filtroStatus === 'inativos' && a.ativo !== false) return false;
         if (filtroTipoAtivo && a.tipoAtribuicao !== filtroTipoAtivo) return false;
+        var funcId = a.funcionario ? a.funcionario.id : '';
+        var pacId = a.paciente ? a.paciente.id : '';
         if (filtroIdAtivo) {
-            if (a.funcionarioId !== filtroIdAtivo && a.pacienteId !== filtroIdAtivo) return false;
+            if (funcId !== filtroIdAtivo && pacId !== filtroIdAtivo) return false;
         }
         if (busca) {
-            var funcNome = (a.funcionarioNome || '').toLowerCase();
-            var pacNome = (a.pacienteNome || '').toLowerCase();
+            var funcNome = (a.funcionario ? a.funcionario.nomeCompleto || '' : '').toLowerCase();
+            var pacNome = (a.paciente ? a.paciente.nomeCompleto || '' : '').toLowerCase();
             if (funcNome.indexOf(busca) < 0 && pacNome.indexOf(busca) < 0) return false;
         }
         return true;
@@ -43,20 +45,24 @@ function renderizarTabela() {
     emptyState.style.display = 'none';
     var html = '';
     dados.forEach(function(a) {
-        var data = a.dataCriacao ? new Date(a.dataCriacao).toLocaleDateString('pt-BR') : '';
+        var funcId = a.funcionario ? a.funcionario.id : '';
+        var funcNome = a.funcionario ? a.funcionario.nomeCompleto || '' : '';
+        var pacId = a.paciente ? a.paciente.id : '';
+        var pacNome = a.paciente ? a.paciente.nomeCompleto || '' : '';
+        var data = a.dataAtribuicao ? new Date(a.dataAtribuicao).toLocaleDateString('pt-BR') : '';
         var tipo = TIPO_LABELS[a.tipoAtribuicao] || (a.tipoAtribuicao || '-');
         var ativo = a.ativo !== false;
         var statusBadge = ativo
             ? '<span class="badge-ativo">Ativo</span>'
             : '<span class="badge-inativo">Inativo</span>';
         var acaoBotao = ativo
-            ? '<button class="act-btn desativar-btn" data-func-id="' + (a.funcionarioId || '') + '" data-pac-id="' + (a.pacienteId || '') + '">Desativar</button>'
-            : '<button class="act-btn reativar-btn" data-func-id="' + (a.funcionarioId || '') + '" data-pac-id="' + (a.pacienteId || '') + '">Reativar</button>';
+            ? '<button class="act-btn desativar-btn" data-func-id="' + funcId + '" data-pac-id="' + pacId + '">Desativar</button>'
+            : '<button class="act-btn reativar-btn" data-func-id="' + funcId + '" data-pac-id="' + pacId + '">Reativar</button>';
 
         html +=
             '<tr>' +
-                '<td><span class="nome-clicavel" data-id="' + (a.funcionarioId || '') + '" data-nome="' + (a.funcionarioNome || '') + '" data-tipo="func">' + (a.funcionarioNome || '-') + '</span></td>' +
-                '<td><span class="nome-clicavel" data-id="' + (a.pacienteId || '') + '" data-nome="' + (a.pacienteNome || '') + '" data-tipo="pac">' + (a.pacienteNome || '-') + '</span></td>' +
+                '<td><span class="nome-clicavel" data-id="' + funcId + '" data-nome="' + funcNome + '" data-tipo="func">' + (funcNome || '-') + '</span></td>' +
+                '<td><span class="nome-clicavel" data-id="' + pacId + '" data-nome="' + pacNome + '" data-tipo="pac">' + (pacNome || '-') + '</span></td>' +
                 '<td>' + tipo + '</td>' +
                 '<td>' + data + '</td>' +
                 '<td>' + statusBadge + '</td>' +
