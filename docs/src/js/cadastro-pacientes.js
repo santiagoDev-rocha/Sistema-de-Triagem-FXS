@@ -1,10 +1,14 @@
 var listaPacientes = [];
+var filtroAtivo = 'todos';
 
 var modal = document.getElementById('modal-paciente');
 var form = document.getElementById('form-cadastro');
 var containerLista = document.querySelector('.patients-list');
 var contadorTexto = document.getElementById('contador-pacientes');
 var currentRole = null;
+var modalEditar = document.getElementById('modal-editar-paciente');
+var formEditar = document.getElementById('form-editar-paciente');
+var modalDetalhe = document.getElementById('modal-detalhe-paciente');
 
 function calcularIdade(dataNasc) {
     var hoje = new Date();
@@ -15,20 +19,33 @@ function calcularIdade(dataNasc) {
     return idade;
 }
 
+function filtrarLista() {
+    var busca = document.getElementById('busca-paciente').value.toLowerCase();
+    return listaPacientes.filter(function(p) {
+        if (filtroAtivo === 'ativos' && p.ativo === false) return false;
+        if (filtroAtivo === 'inativos' && p.ativo !== false) return false;
+        if (filtroAtivo === 'masculino' && p.sexo !== 'MASCULINO') return false;
+        if (filtroAtivo === 'feminino' && p.sexo !== 'FEMININO') return false;
+        if (busca && (p.nomeCompleto || '').toLowerCase().indexOf(busca) < 0) return false;
+        return true;
+    });
+}
+
 function renderizarPacientes(role) {
+    var lista = filtrarLista();
     containerLista.innerHTML = '';
 
-    if (listaPacientes.length === 0) {
+    if (lista.length === 0) {
         containerLista.innerHTML =
             '<div class="empty-warning">' +
-                '<p>Nenhum paciente cadastrado no sistema.</p>' +
+                '<p>Nenhum paciente encontrado.</p>' +
             '</div>';
         contadorTexto.innerText = "0 pacientes cadastrados";
         if (window.lucide) lucide.createIcons();
         return;
     }
 
-    listaPacientes.forEach(function(paciente) {
+    lista.forEach(function(paciente) {
         var nome = paciente.nomeCompleto || '';
         var iniciais = nome.split(' ').map(function(n) { return n[0]; }).join('').substring(0, 2).toUpperCase();
         var idade = paciente.dataNascimento ? calcularIdade(paciente.dataNascimento) : '?';
@@ -36,14 +53,28 @@ function renderizarPacientes(role) {
         var sexoLabel = paciente.sexo === 'MASCULINO' ? 'masculino' : 'feminino';
         var sexoIcon = paciente.sexo === 'MASCULINO' ? 'mars' : 'venus';
         var sexoClass = paciente.sexo === 'MASCULINO' ? 'male' : 'female';
+        var inativo = paciente.ativo === false;
 
         var card = document.createElement('div');
-        card.className = 'patient-card';
+        card.className = 'patient-card' + (inativo ? ' inactive' : '');
+
+        var actionsHtml = '<div class="patient-actions">';
+        actionsHtml += '<button class="act-btn edit-btn" data-id="' + paciente.id + '" title="Editar"><i data-lucide="pencil"></i></button>';
+        if (role === 'ADMIN') {
+            if (inativo) {
+                actionsHtml += '<button class="act-btn reativar-btn" data-id="' + paciente.id + '">Reativar</button>';
+            } else {
+                actionsHtml += '<button class="act-btn delete" data-id="' + paciente.id + '"><i data-lucide="trash-2"></i></button>';
+            }
+        }
+        actionsHtml += '</div>';
+
         card.innerHTML =
             '<div class="patient-avatar">' + iniciais + '</div>' +
             '<div class="patient-info">' +
                 '<div class="name-row">' +
-                    '<strong>' + nome + '</strong>' +
+                    '<span class="nome-clicavel" data-id="' + paciente.id + '">' + nome + '</span>' +
+                    (inativo ? '<span class="inactive-badge">Inativo</span>' : '') +
                     '<span class="gender-tag ' + sexoClass + '">' +
                         '<i data-lucide="' + sexoIcon + '"></i> ' + sexoLabel +
                     '</span>' +
@@ -53,11 +84,8 @@ function renderizarPacientes(role) {
                     '<span><i data-lucide="fingerprint"></i> CPF: ' + (paciente.cpf || 'Não informado') + '</span>' +
                 '</div>' +
             '</div>' +
-            (role === 'ADMIN'
-                ? '<div class="patient-actions">' +
-                      '<button class="act-btn delete" data-id="' + paciente.id + '"><i data-lucide="trash-2"></i></button>' +
-                  '</div>'
-                : '');
+            actionsHtml;
+
         containerLista.appendChild(card);
     });
 
@@ -65,9 +93,21 @@ function renderizarPacientes(role) {
 
     if (window.lucide) lucide.createIcons();
 
-    document.querySelectorAll('.act-btn.delete').forEach(function(btn) {
+    // Wire actions
+    containerLista.querySelectorAll('.nome-clicavel').forEach(function(el) {
+        el.addEventListener('click', function() { abrirDetalhe(this.getAttribute('data-id')); });
+    });
+    containerLista.querySelectorAll('.act-btn.delete').forEach(function(btn) {
+        btn.addEventListener('click', function() { desativarPaciente(this.getAttribute('data-id')); });
+    });
+    containerLista.querySelectorAll('.act-btn.reativar-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() { reativarPacienteAction(this.getAttribute('data-id')); });
+    });
+    containerLista.querySelectorAll('.act-btn.edit-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
-            desativarPaciente(this.getAttribute('data-id'));
+            var id = this.getAttribute('data-id');
+            var paciente = listaPacientes.find(function(p) { return p.id === id; });
+            if (paciente) abrirEdicao(paciente);
         });
     });
 }
@@ -82,6 +122,136 @@ async function carregarPacientes(role) {
     }
 }
 
+function abrirEdicao(paciente) {
+    document.getElementById('editar-paciente-id').value = paciente.id;
+    document.getElementById('editar-nome').value = paciente.nomeCompleto || '';
+    document.getElementById('editar-data-nascimento').value = paciente.dataNascimento || '';
+    document.getElementById('editar-cpf').value = paciente.cpf || '';
+    document.getElementById('editar-responsavel-nome').value = paciente.responsavelNome || '';
+    document.getElementById('editar-responsavel-telefone').value = paciente.telefone || '';
+    document.getElementById('editar-parentesco').value = paciente.responsavelParentesco || '';
+
+    var sexoVal = paciente.sexo === 'MASCULINO' ? 'M' : 'F';
+    var radios = formEditar.querySelectorAll('input[name="editar-sexo"]');
+    radios.forEach(function(r) { r.checked = r.value === sexoVal; });
+
+    modalEditar.style.display = 'flex';
+    if (window.lucide) lucide.createIcons();
+}
+
+formEditar.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var id = document.getElementById('editar-paciente-id').value;
+    var sexoRadio = formEditar.querySelector('input[name="editar-sexo"]:checked');
+    var sexoBackend = sexoRadio && sexoRadio.value === 'M' ? 'MASCULINO' : 'FEMININO';
+
+    var body = {
+        nomeCompleto: document.getElementById('editar-nome').value,
+        dataNascimento: document.getElementById('editar-data-nascimento').value,
+        sexo: sexoBackend,
+        responsavelNome: document.getElementById('editar-responsavel-nome').value,
+        telefone: document.getElementById('editar-responsavel-telefone').value,
+        responsavelParentesco: document.getElementById('editar-parentesco').value
+    };
+
+    try {
+        await api.atualizarPaciente(id, body);
+        modalEditar.style.display = 'none';
+        formEditar.reset();
+        await carregarPacientes(currentRole);
+    } catch (err) {
+        alert(err.message || 'Erro ao atualizar paciente.');
+    }
+});
+
+async function abrirDetalhe(pacienteId) {
+    try {
+        var resP = await api.getPaciente(pacienteId);
+        var p = resP.data;
+        var idade = p.dataNascimento ? calcularIdade(p.dataNascimento) : '?';
+        var sexoLabel = p.sexo === 'MASCULINO' ? '♂ Masculino' : '♀ Feminino';
+        var dataFormatada = p.dataNascimento ? new Date(p.dataNascimento + 'T00:00:00').toLocaleDateString('pt-BR') : '';
+
+        var html =
+            '<div class="detalhe-section">' +
+                '<p><strong>Nome:</strong> ' + (p.nomeCompleto || '') + '</p>' +
+                '<p><strong>Sexo:</strong> ' + sexoLabel + '</p>' +
+                '<p><strong>Idade:</strong> ' + idade + ' anos (' + dataFormatada + ')</p>' +
+                '<p><strong>CPF:</strong> ' + (p.cpf || '') + '</p>' +
+                '<p><strong>Responsável:</strong> ' + (p.responsavelNome || '') + ' (' + (p.responsavelParentesco || '') + ')</p>' +
+                '<p><strong>Telefone:</strong> ' + (p.telefone || '') + '</p>' +
+            '</div>';
+
+        try {
+            var resD = await api.getDiagnosticosPaciente(pacienteId);
+            var diags = resD.data || [];
+            if (diags.length > 0) {
+                html += '<div class="detalhe-section"><h4 style="margin-bottom:10px">Avaliações</h4><table class="detalhe-diagnosticos-table"><thead><tr><th>Data</th><th>Score</th><th>Resultado</th></tr></thead><tbody>';
+                diags.forEach(function(d) {
+                    var data = d.dataDiagnostico ? new Date(d.dataDiagnostico).toLocaleDateString('pt-BR') : '';
+                    var resultado = d.recomendacao ? 'Encaminhar' : 'Monitorar';
+                    html += '<tr><td>' + data + '</td><td>' + (d.score != null ? parseFloat(d.score).toFixed(4) : '-') + '</td><td>' + resultado + '</td></tr>';
+                });
+                html += '</tbody></table></div>';
+            } else {
+                html += '<div class="detalhe-section"><p style="color:#999">Nenhuma avaliação registrada.</p></div>';
+            }
+        } catch(e) { /* ignore diagnostic fetch error */ }
+
+        document.getElementById('detalhe-paciente-body').innerHTML = html;
+        document.getElementById('btn-nova-triagem').href = './triagem.html?pacienteId=' + pacienteId;
+        modalDetalhe.style.display = 'flex';
+    } catch (err) {
+        alert(err.message || 'Erro ao carregar detalhes do paciente.');
+    }
+}
+
+async function reativarPacienteAction(id) {
+    if (!confirm('Reativar este paciente?')) return;
+    try {
+        await api.reativarPaciente(id);
+        await carregarPacientes(currentRole);
+    } catch (err) {
+        alert(err.message || 'Erro ao reativar paciente.');
+    }
+}
+
+// ── Search ──
+document.getElementById('busca-paciente').addEventListener('input', async function() {
+    var valor = this.value.trim();
+    var cpfLimpo = valor.replace(/\D/g, '');
+    // CPF search: 11 digits or formatted xxx.xxx.xxx-xx
+    if (cpfLimpo.length === 11) {
+        try {
+            var res = await api.getPacienteByCpf(cpfLimpo);
+            if (res.data) {
+                listaPacientes = [res.data];
+            } else {
+                listaPacientes = [];
+            }
+        } catch(e) {
+            listaPacientes = [];
+        }
+    }
+    renderizarPacientes(currentRole);
+});
+
+// ── Filter buttons ──
+document.querySelectorAll('.filter-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        this.classList.add('active');
+        filtroAtivo = this.getAttribute('data-filter') || 'todos';
+        // If CPF search was active, reload full list
+        if (document.getElementById('busca-paciente').value.replace(/\D/g,'').length === 11) {
+            carregarPacientes(currentRole).then(function() { renderizarPacientes(currentRole); });
+        } else {
+            renderizarPacientes(currentRole);
+        }
+    });
+});
+
+// ── Existing modal handlers ──
 form.addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -124,10 +294,7 @@ async function desativarPaciente(id) {
 document.getElementById('btn-abrir-modal').addEventListener('click', function() { modal.style.display = 'flex'; });
 document.getElementById('btn-fechar').addEventListener('click', function() { modal.style.display = 'none'; });
 document.getElementById('btn-cancelar').addEventListener('click', function() { modal.style.display = 'none'; });
-
-window.addEventListener('click', function(e) {
-    if (e.target === modal) modal.style.display = 'none';
-});
+window.addEventListener('click', function(e) { if (e.target === modal) modal.style.display = 'none'; });
 
 var modalAssociar = document.getElementById('modal-associar');
 var formAssociar = document.getElementById('form-associar');
@@ -136,16 +303,9 @@ document.getElementById('btn-abrir-associar').addEventListener('click', function
     modalAssociar.style.display = 'flex';
     if (window.lucide) lucide.createIcons();
 });
-document.getElementById('btn-fechar-associar').addEventListener('click', function() {
-    modalAssociar.style.display = 'none';
-});
-document.getElementById('btn-cancelar-associar').addEventListener('click', function() {
-    modalAssociar.style.display = 'none';
-});
-
-window.addEventListener('click', function(e) {
-    if (e.target === modalAssociar) modalAssociar.style.display = 'none';
-});
+document.getElementById('btn-fechar-associar').addEventListener('click', function() { modalAssociar.style.display = 'none'; });
+document.getElementById('btn-cancelar-associar').addEventListener('click', function() { modalAssociar.style.display = 'none'; });
+window.addEventListener('click', function(e) { if (e.target === modalAssociar) modalAssociar.style.display = 'none'; });
 
 formAssociar.addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -160,6 +320,17 @@ formAssociar.addEventListener('submit', async function(e) {
     }
 });
 
+// ── Edit modal handlers ──
+document.getElementById('btn-fechar-editar').addEventListener('click', function() { modalEditar.style.display = 'none'; });
+document.getElementById('btn-cancelar-editar').addEventListener('click', function() { modalEditar.style.display = 'none'; });
+window.addEventListener('click', function(e) { if (e.target === modalEditar) modalEditar.style.display = 'none'; });
+
+// ── Detail modal handlers ──
+document.getElementById('btn-fechar-detalhe').addEventListener('click', function() { modalDetalhe.style.display = 'none'; });
+document.getElementById('btn-fechar-detalhe-footer').addEventListener('click', function() { modalDetalhe.style.display = 'none'; });
+window.addEventListener('click', function(e) { if (e.target === modalDetalhe) modalDetalhe.style.display = 'none'; });
+
+// ── Init ──
 requireAuthWithRole(function(user, role) {
     currentRole = role;
     if (role === 'MEDICO') {

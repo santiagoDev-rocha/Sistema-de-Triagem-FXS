@@ -19,13 +19,15 @@
             </div>
             <nav>
                 <a href="./home.html"><i data-lucide="home"></i> Início</a>
-                <a href="#"><i data-lucide="info"></i> Sobre a FXS</a>
+                <a href="./sobre-fxs.html"><i data-lucide="info"></i> Sobre a FXS</a>
                 <a href="./cadastro-medicos.html" data-admin-only><i data-lucide="user-plus"></i> Cadastro de Médicos</a>
                 <a href="#" class="active"><i data-lucide="users"></i> Cadastro de Pacientes</a>
-                <a href="#"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
-                <a href="#"><i data-lucide="bar-chart-3"></i> Resultados</a>
+                <a href="./triagem.html"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
+                <a href="./resultados.html"><i data-lucide="bar-chart-3"></i> Resultados</a>
+                <a href="./associacoes.html" data-admin-only><i data-lucide="link"></i> Associações</a>
             </nav>
             <div class="sidebar-footer">
+                <a href="./perfil.html" class="perfil-link"><i data-lucide="user"></i> Meu Perfil</a>
                 <a href="#" onclick="logout(); return false;" class="logout-link"><i data-lucide="log-out"></i> Sair</a>
                 <p>PUCPR • Instituto Buko Kaesemodel</p>
                 <p>v1.0.0 - 2025</p>
@@ -55,12 +57,14 @@
             <div class="filter-bar">
                 <div class="search-input">
                     <i data-lucide="search"></i>
-                    <input type="text" placeholder="Buscar pacientes...">
+                    <input type="text" id="busca-paciente" placeholder="Buscar pacientes... (ou digite um CPF)">
                 </div>
                 <div class="filter-options">
-                    <button class="filter-btn active">Todos</button>
-                    <button class="filter-btn"><i data-lucide="mars"></i> Masc.</button>
-                    <button class="filter-btn"><i data-lucide="venus"></i> Fem.</button>
+                    <button class="filter-btn active" data-filter="todos">Todos</button>
+                    <button class="filter-btn" data-filter="ativos">Ativos</button>
+                    <button class="filter-btn" data-filter="inativos">Inativos</button>
+                    <button class="filter-btn" data-filter="masculino"><i data-lucide="mars"></i> Masc.</button>
+                    <button class="filter-btn" data-filter="feminino"><i data-lucide="venus"></i> Fem.</button>
                 </div>
             </div>
 
@@ -159,6 +163,82 @@
                     <button type="submit" class="btn-save"><i data-lucide="check"></i> Associar</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Modal editar paciente -->
+    <div id="modal-editar-paciente" class="modal-overlay">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h3><i data-lucide="edit"></i> Editar Paciente</h3>
+                <button id="btn-fechar-editar" class="close-x">&times;</button>
+            </header>
+            <form id="form-editar-paciente">
+                <input type="hidden" id="editar-paciente-id">
+                <div class="form-group full">
+                    <label>Nome Completo *</label>
+                    <input type="text" id="editar-nome" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Sexo Biológico *</label>
+                        <div class="gender-selector">
+                            <label class="radio-btn"><input type="radio" name="editar-sexo" value="M" required><span><i data-lucide="mars"></i> Masculino</span></label>
+                            <label class="radio-btn"><input type="radio" name="editar-sexo" value="F" required><span><i data-lucide="venus"></i> Feminino</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Data de Nascimento *</label>
+                        <input type="date" id="editar-data-nascimento" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nome do Responsável *</label>
+                        <input type="text" id="editar-responsavel-nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone do Responsável *</label>
+                        <input type="text" id="editar-responsavel-telefone" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Parentesco *</label>
+                        <select id="editar-parentesco" required>
+                            <option value="">Selecione...</option>
+                            <option value="PAI">Pai</option><option value="MAE">Mãe</option>
+                            <option value="AVO">Avô</option><option value="AVA">Avó</option>
+                            <option value="TIO">Tio</option><option value="TIA">Tia</option>
+                            <option value="IRMAO">Irmão</option><option value="IRMA">Irmã</option>
+                            <option value="TUTOR">Tutor</option><option value="OUTRO">Outro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>CPF</label>
+                        <input type="text" id="editar-cpf" readonly class="readonly-field">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn-cancelar-editar" class="btn-cancel">Cancelar</button>
+                    <button type="submit" class="btn-save"><i data-lucide="check"></i> Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal detalhe paciente -->
+    <div id="modal-detalhe-paciente" class="modal-overlay">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h3><i data-lucide="user"></i> Detalhe do Paciente</h3>
+                <button id="btn-fechar-detalhe" class="close-x">&times;</button>
+            </header>
+            <div id="detalhe-paciente-body"></div>
+            <div class="modal-footer">
+                <button id="btn-fechar-detalhe-footer" class="btn-cancel">Fechar</button>
+                <a id="btn-nova-triagem" href="#" class="btn-save"><i data-lucide="clipboard-check"></i> Nova Triagem</a>
+            </div>
         </div>
     </div>
 

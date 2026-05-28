@@ -470,3 +470,24 @@ input:focus {
     font-weight: 500;
     font-size: 0.9rem;
 }
+
+.patient-card.inactive { opacity: 0.6; }
+.inactive-badge { background: #fef2f2; color: #991b1b; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; }
+.readonly-field { background: #f1f5f9 !important; color: var(--text-muted); cursor: not-allowed; }
+.act-btn.edit-btn { background: none; border: 1px solid #e2e8f0; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--primary); }
+.act-btn.reativar-btn { background: none; border: 1px solid #22c55e; color: #166534; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; }
+.nome-clicavel { cursor: pointer; color: var(--primary); font-weight: 600; }
+.nome-clicavel:hover { text-decoration: underline; }
+.detalhe-section { padding: 16px 24px; border-bottom: 1px solid #f1f5f9; }
+.detalhe-section:last-child { border-bottom: none; }
+.detalhe-section p { font-size: 0.9rem; margin-bottom: 8px; color: var(--text-dark); }
+.detalhe-diagnosticos-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.detalhe-diagnosticos-table th { text-align: left; padding: 8px; color: var(--text-muted); border-bottom: 1px solid #e2e8f0; font-size: 0.75rem; text-transform: uppercase; }
+.detalhe-diagnosticos-table td { padding: 8px; border-bottom: 1px solid #f1f5f9; }
+.btn-secundario { background: none; border: 1px solid #e2e8f0; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; }
+.perfil-link { display: flex; align-items: center; gap: 8px; color: #cbd5e1; text-decoration: none; padding: 12px; border-radius: 8px; margin-bottom: 4px; font-size: 0.9rem; transition: 0.2s; }
+.perfil-link:hover { background-color: rgba(255,255,255,0.1); color: white; }
+
+#form-editar-paciente {
+    padding: 24px;
+}
