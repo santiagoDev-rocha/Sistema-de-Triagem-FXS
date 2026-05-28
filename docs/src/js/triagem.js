@@ -280,11 +280,11 @@ document.addEventListener('click', function(e) {
 
 // Init
 requireAuthWithRole(async function(user, role) {
-    if (role === 'MEDICO') {
-        document.querySelectorAll('[data-admin-only]').forEach(function(el) {
-            el.style.display = 'none';
-        });
+    if (role === 'ADMIN') {
+        document.querySelectorAll('[data-admin-only]').forEach(function(el) { el.style.display = ''; });
     }
+
+    if (window.lucide) lucide.createIcons();
 
     try {
         var res = await api.listarPacientes();

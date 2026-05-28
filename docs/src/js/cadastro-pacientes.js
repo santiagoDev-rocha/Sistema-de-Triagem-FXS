@@ -336,10 +336,10 @@ window.addEventListener('click', function(e) { if (e.target === modalDetalhe) mo
 // ── Init ──
 requireAuthWithRole(function(user, role) {
     currentRole = role;
+    if (role === 'ADMIN') {
+        document.querySelectorAll('[data-admin-only]').forEach(function(el) { el.style.display = ''; });
+    }
     if (role === 'MEDICO') {
-        document.querySelectorAll('[data-admin-only]').forEach(function(el) {
-            el.style.display = 'none';
-        });
         var btnAssociar = document.getElementById('btn-abrir-associar');
         if (btnAssociar) btnAssociar.style.display = '';
     }

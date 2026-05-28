@@ -12,6 +12,7 @@ var formEditar = document.getElementById('form-editar-medico');
 function filtrarLista() {
     var busca = document.getElementById('busca-medico').value.toLowerCase();
     return listaMedicos.filter(function(m) {
+        if (currentUid && m.firebaseUid === currentUid) return false;
         if (filtroAtivo === 'ativos' && m.ativo === false) return false;
         if (filtroAtivo === 'inativos' && m.ativo !== false) return false;
         if (busca && (m.nomeCompleto || '').toLowerCase().indexOf(busca) < 0) return false;

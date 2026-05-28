@@ -47,10 +47,8 @@ function renderizarAvaliacoes(diagnosticos, encaminhamentos) {
 }
 
 requireAuthWithRole(async function(user, role) {
-    if (role === 'MEDICO') {
-        document.querySelectorAll('[data-admin-only]').forEach(function(el) {
-            el.style.display = 'none';
-        });
+    if (role === 'ADMIN') {
+        document.querySelectorAll('[data-admin-only]').forEach(function(el) { el.style.display = ''; });
     }
 
     try {

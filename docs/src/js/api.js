@@ -102,6 +102,11 @@ function requireAuthWithRole(callback) {
     });
 }
 
+// Hide admin-only elements immediately to prevent FOUC for non-admin users.
+// Runs synchronously on defer — DOM is ready, no async wait.
+// requireAuthWithRole callbacks will show them for ADMIN role.
+document.querySelectorAll('[data-admin-only]').forEach(function(el) { el.style.display = 'none'; });
+
 function logout() {
     firebase.auth().signOut().then(function() {
         window.location.href = '../../index.html';
