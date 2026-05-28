@@ -23,6 +23,7 @@ document.getElementById('form-perfil').addEventListener('submit', async function
     e.preventDefault();
     var body = {
         nomeCompleto: document.getElementById('perfil-nome').value,
+        email: document.getElementById('perfil-email').value,
         telefone: document.getElementById('perfil-telefone').value,
         dataNascimento: document.getElementById('perfil-data-nascimento').value || null
     };

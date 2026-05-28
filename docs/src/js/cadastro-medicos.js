@@ -115,6 +115,7 @@ formEditar.addEventListener('submit', async function(e) {
 
     var body = {
         nomeCompleto: document.getElementById('editar-medico-nome').value,
+        email: medicoAtual ? medicoAtual.email : '',
         telefone: document.getElementById('editar-medico-telefone').value,
         dataNascimento: document.getElementById('editar-medico-data-nascimento').value || null
     };
