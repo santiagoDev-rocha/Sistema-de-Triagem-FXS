@@ -26,7 +26,11 @@ function filtrarLista() {
         if (filtroAtivo === 'inativos' && p.ativo !== false) return false;
         if (filtroAtivo === 'masculino' && p.sexo !== 'MASCULINO') return false;
         if (filtroAtivo === 'feminino' && p.sexo !== 'FEMININO') return false;
-        if (busca && (p.nomeCompleto || '').toLowerCase().indexOf(busca) < 0) return false;
+        if (busca) {
+            var matchNome = (p.nomeCompleto || '').toLowerCase().indexOf(busca) >= 0;
+            var matchCpf = (p.cpf || '').replace(/\D/g, '').indexOf(busca.replace(/\D/g, '')) >= 0;
+            if (!matchNome && !matchCpf) return false;
+        }
         return true;
     });
 }
