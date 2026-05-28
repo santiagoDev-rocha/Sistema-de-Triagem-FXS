@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados - FXS</title>
+    <link rel="stylesheet" href="./../css/resultados.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-auth-compat.js"></script>
+    <script src="./../js/api.js" defer></script>
+    <script src="./../js/resultados.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="./../img/logo.png" alt="IBK Logo" class="logo-img">
+            </div>
+            <nav>
+                <a href="./home.html"><i data-lucide="home"></i> Início</a>
+                <a href="./sobre-fxs.html"><i data-lucide="info"></i> Sobre a FXS</a>
+                <a href="./cadastro-medicos.html" data-admin-only><i data-lucide="user-plus"></i> Cadastro de Médicos</a>
+                <a href="./cadastro-pacientes.html"><i data-lucide="users"></i> Cadastro de Pacientes</a>
+                <a href="./triagem.html"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
+                <a href="#" class="active"><i data-lucide="bar-chart-3"></i> Resultados</a>
+                <a href="./associacoes.html" data-admin-only><i data-lucide="link"></i> Associações</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="./perfil.html" class="perfil-link"><i data-lucide="user"></i> Meu Perfil</a>
+                <a href="#" onclick="logout(); return false;" class="logout-link"><i data-lucide="log-out"></i> Sair</a>
+                <p>PUCPR • Instituto Buko Kaesemodel</p>
+                <p>v1.0.0 - 2025</p>
+            </div>
+        </aside>
+
+        <main class="content">
+            <header class="breadcrumb">
+                FXS Brasil > <span>Resultados</span>
+            </header>
+
+            <section class="page-header">
+                <h1>Resultados das Avaliações</h1>
+                <p id="contador-resultados">0 avaliações realizadas</p>
+            </section>
+
+            <div class="stats-grid">
+                <div class="card stat-card purple-bg">
+                    <div class="icon-box purple-icon"><i data-lucide="clipboard-list"></i></div>
+                    <h2 id="count-total">0</h2>
+                    <p>Total de Avaliações</p>
+                </div>
+                <div class="card stat-card red-bg">
+                    <div class="icon-box red-icon"><i data-lucide="alert-circle"></i></div>
+                    <h2 id="count-encaminhar">0</h2>
+                    <p>Encaminhamentos</p>
+                </div>
+                <div class="card stat-card green-bg">
+                    <div class="icon-box green-icon"><i data-lucide="check-circle"></i></div>
+                    <h2 id="count-monitorar">0</h2>
+                    <p>Monitorar</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="filter-bar">
+                    <div class="search-input">
+                        <i data-lucide="search"></i>
+                        <input type="text" id="busca-nome" placeholder="Buscar por nome do paciente...">
+                    </div>
+                    <div class="filter-options">
+                        <button class="filter-btn active" data-filter="todos">Todos</button>
+                        <button class="filter-btn" data-filter="encaminhar">Encaminhar</button>
+                        <button class="filter-btn" data-filter="monitorar">Monitorar</button>
+                    </div>
+                    <div class="date-filters">
+                        <input type="date" id="filtro-data-inicio" title="Data início">
+                        <input type="date" id="filtro-data-fim" title="Data fim">
+                    </div>
+                    <button id="btn-limpar-filtros" class="btn-secundario">Limpar filtros</button>
+                </div>
+
+                <div id="filtro-paciente-ativo" class="filtro-paciente-tag" style="display:none">
+                    Filtrando por: <strong id="filtro-paciente-nome"></strong>
+                    <button id="btn-limpar-filtro-paciente" class="tag-close">&times;</button>
+                </div>
+
+                <table class="resultados-table">
+                    <thead>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>Sexo</th>
+                            <th>Score</th>
+                            <th>Resultado</th>
+                            <th>Data</th>
+                            <th>Avaliador</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultados-body"></tbody>
+                </table>
+
+                <div id="empty-state" class="empty-state" style="display:none">
+                    <i data-lucide="clipboard-list"></i>
+                    <p>Nenhuma avaliação encontrada</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal detalhe -->
+    <div id="modal-detalhe" class="modal-overlay">
+        <div class="modal-content modal-lg">
+            <header class="modal-header">
+                <h3><i data-lucide="file-text"></i> Detalhe da Avaliação</h3>
+                <button class="close-x btn-fechar-detalhe">&times;</button>
+            </header>
+            <div id="modal-detalhe-body"></div>
+            <div class="modal-footer">
+                <button class="btn-cancel btn-fechar-detalhe">Fechar</button>
+                <button id="btn-editar-from-detalhe" class="btn-save">
+                    <i data-lucide="edit"></i> Editar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal edição -->
+    <div id="modal-editar" class="modal-overlay">
+        <div class="modal-content modal-lg">
+            <header class="modal-header">
+                <h3><i data-lucide="edit"></i> Editar Avaliação</h3>
+                <button class="close-x btn-fechar-editar">&times;</button>
+            </header>
+            <div id="modal-editar-body"></div>
+            <div class="modal-footer">
+                <button class="btn-cancel btn-fechar-editar">Cancelar</button>
+                <button id="btn-salvar-edicao" class="btn-save">
+                    <i data-lucide="save"></i> Salvar Alterações
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
