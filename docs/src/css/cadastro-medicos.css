@@ -366,3 +366,20 @@ input:focus {
     font-weight: 500;
     font-size: 0.9rem;
 }
+
+.medico-card.inactive { opacity: 0.6; }
+.inactive-badge { background: #fef2f2; color: #991b1b; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; }
+.role-tag { background: #e8eaf2; color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; }
+.readonly-field { background: #f1f5f9 !important; color: var(--text-muted); cursor: not-allowed; }
+.act-btn.edit-btn { background: none; border: 1px solid #e2e8f0; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--primary); }
+.act-btn.reativar-btn { background: none; border: 1px solid #22c55e; color: #166534; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; }
+.filter-options { display: flex; gap: 8px; }
+.filter-btn { background: white; border: 1px solid #e2e8f0; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; }
+.filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+.perfil-link { display: flex; align-items: center; gap: 8px; color: #cbd5e1; text-decoration: none; padding: 12px; border-radius: 8px; margin-bottom: 4px; font-size: 0.9rem; transition: 0.2s; }
+.perfil-link:hover { background-color: rgba(255,255,255,0.1); color: white; }
+select { width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; background-color: #f8fafc; outline: none; font-size: 0.9rem; }
+input[type="date"] { width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; background-color: #f8fafc; outline: none; font-size: 0.9rem; }
+input[type="password"] { width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; background-color: #f8fafc; outline: none; font-size: 0.9rem; }
+#form-editar-medico { padding: 24px; }
+label .obs { font-weight: 400; color: var(--text-muted); font-size: 0.8rem; }

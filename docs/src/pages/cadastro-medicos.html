@@ -19,13 +19,15 @@
             </div>
             <nav>
                 <a href="./home.html"><i data-lucide="home"></i> Início</a>
-                <a href="#"><i data-lucide="info"></i> Sobre a FXS</a>
+                <a href="./sobre-fxs.html"><i data-lucide="info"></i> Sobre a FXS</a>
                 <a href="#" class="active"><i data-lucide="user-plus"></i> Cadastro de Médicos</a>
-                <a href="./cadastro-pacientes.html"><i data-lucide="user"></i> Cadastro de Pacientes</a>
-                <a href="#"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
-                <a href="#"><i data-lucide="bar-chart-3"></i> Resultados</a>
+                <a href="./cadastro-pacientes.html"><i data-lucide="users"></i> Cadastro de Pacientes</a>
+                <a href="./triagem.html"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
+                <a href="./resultados.html"><i data-lucide="bar-chart-3"></i> Resultados</a>
+                <a href="./associacoes.html" data-admin-only><i data-lucide="link"></i> Associações</a>
             </nav>
             <div class="sidebar-footer">
+                <a href="./perfil.html" class="perfil-link"><i data-lucide="user"></i> Meu Perfil</a>
                 <a href="#" onclick="logout(); return false;" class="logout-link"><i data-lucide="log-out"></i> Sair</a>
                 <p>PUCPR • Instituto Buko Kaesemodel</p>
                 <p>v1.0.0 - 2025</p>
@@ -49,7 +51,12 @@
             <div class="filter-bar">
                 <div class="search-input">
                     <i data-lucide="search"></i>
-                    <input type="text" placeholder="Buscar médicos por nome...">
+                    <input type="text" id="busca-medico" placeholder="Buscar médicos por nome...">
+                </div>
+                <div class="filter-options">
+                    <button class="filter-btn active" data-filter="todos">Todos</button>
+                    <button class="filter-btn" data-filter="ativos">Ativos</button>
+                    <button class="filter-btn" data-filter="inativos">Inativos</button>
                 </div>
             </div>
 
@@ -100,6 +107,55 @@
                 <div class="modal-footer">
                     <button type="button" id="btn-cancelar" class="btn-cancel">Cancelar</button>
                     <button type="submit" class="btn-save"><i data-lucide="check"></i> Cadastrar Médico</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Modal editar médico -->
+    <div id="modal-editar-medico" class="modal-overlay">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h3><i data-lucide="edit"></i> Editar Médico</h3>
+                <button id="btn-fechar-editar" class="close-x">&times;</button>
+            </header>
+            <form id="form-editar-medico">
+                <input type="hidden" id="editar-medico-id">
+                <input type="hidden" id="editar-medico-firebase-uid">
+                <div class="form-group full">
+                    <label>Nome Completo *</label>
+                    <input type="text" id="editar-medico-nome" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Telefone</label>
+                        <input type="text" id="editar-medico-telefone">
+                    </div>
+                    <div class="form-group">
+                        <label>Data de Nascimento</label>
+                        <input type="date" id="editar-medico-data-nascimento">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>CPF</label>
+                        <input type="text" id="editar-medico-cpf" readonly class="readonly-field">
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input type="email" id="editar-medico-email" readonly class="readonly-field">
+                    </div>
+                </div>
+                <div class="form-group full" id="role-change-area">
+                    <label>Função (Role)</label>
+                    <select id="editar-medico-role">
+                        <option value="MEDICO">MEDICO</option>
+                        <option value="ADMIN">ADMIN</option>
+                    </select>
+                    <small id="role-aviso" style="color:#999;font-size:0.8rem;display:none">Não é possível alterar seu próprio role.</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn-cancelar-editar" class="btn-cancel">Cancelar</button>
+                    <button type="submit" class="btn-save"><i data-lucide="check"></i> Salvar</button>
                 </div>
             </form>
         </div>
