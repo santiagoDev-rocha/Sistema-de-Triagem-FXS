@@ -376,8 +376,8 @@ input:focus {
 .filter-options { display: flex; gap: 8px; }
 .filter-btn { background: white; border: 1px solid #e2e8f0; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; }
 .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-.perfil-link { display: flex; align-items: center; gap: 8px; color: #cbd5e1; text-decoration: none; padding: 12px; border-radius: 8px; margin-bottom: 4px; font-size: 0.9rem; transition: 0.2s; }
-.perfil-link:hover { background-color: rgba(255,255,255,0.1); color: white; }
+.perfil-link, .logout-link { display: flex; align-items: center; gap: 8px; color: #cbd5e1; text-decoration: none; padding: 12px; border-radius: 8px; margin-bottom: 4px; font-size: 0.9rem; transition: 0.2s; }
+.perfil-link:hover, .logout-link:hover { background-color: rgba(255,255,255,0.1); color: white; }
 select { width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; background-color: #f8fafc; outline: none; font-size: 0.9rem; }
 input[type="date"] { width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; background-color: #f8fafc; outline: none; font-size: 0.9rem; }
 input[type="password"] { width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; background-color: #f8fafc; outline: none; font-size: 0.9rem; }
