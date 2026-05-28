@@ -49,16 +49,36 @@ var api = {
     put:   function(path, body) { return apiRequest('PUT', path, body); },
     patch: function(path) { return apiRequest('PATCH', path); },
 
-    listarFuncionarios:    function() { return this.get('/funcionarios/return/all'); },
-    cadastrarFuncionario:  function(body) { return this.post('/funcionarios/register', body); },
-    desativarFuncionario:  function(id) { return this.patch('/funcionarios/desativar/' + id); },
+    listarFuncionarios:         function() { return this.get('/funcionarios/return/all'); },
+    cadastrarFuncionario:       function(body) { return this.post('/funcionarios/register', body); },
+    desativarFuncionario:       function(id) { return this.patch('/funcionarios/desativar/' + id); },
+    getFuncionario:             function(id) { return this.get('/funcionarios/return/' + id); },
+    getFuncionarioAtual:        function() { return this.get('/funcionarios/return'); },
+    atualizarFuncionario:       function(id, body) { return this.put('/funcionarios/update/' + id, body); },
+    atualizarFuncionarioAtual:  function(body) { return this.put('/funcionarios/update', body); },
+    reativarFuncionario:        function(id) { return this.patch('/funcionarios/reativar/' + id); },
+    setRole:                    function(id, role) { return this.patch('/funcionarios/role/' + id + '/' + role); },
 
-    listarPacientes:       function() { return this.get('/pacientes/return/all'); },
-    cadastrarPaciente:     function(body) { return this.post('/pacientes/register', body); },
-    desativarPaciente:     function(id) { return this.patch('/pacientes/desativar/' + id); },
-    associarPaciente:      function(cpf) { return this.post('/funcionariopaciente/associar/' + cpf); },
+    listarPacientes:            function() { return this.get('/pacientes/return/all'); },
+    cadastrarPaciente:          function(body) { return this.post('/pacientes/register', body); },
+    desativarPaciente:          function(id) { return this.patch('/pacientes/desativar/' + id); },
+    getPaciente:                function(id) { return this.get('/pacientes/return/' + id); },
+    getPacienteByCpf:           function(cpf) { return this.get('/pacientes/return/cpf/' + cpf); },
+    atualizarPaciente:          function(id, body) { return this.put('/pacientes/update/' + id, body); },
+    reativarPaciente:           function(id) { return this.patch('/pacientes/reativar/' + id); },
 
-    listarDiagnosticos:    function() { return this.get('/diagnosticos/return/all'); }
+    associarPaciente:           function(cpf) { return this.post('/funcionariopaciente/associar/' + cpf); },
+    listarAssociacoes:          function() { return this.get('/funcionariopaciente/return/all'); },
+    getAssociacoesPaciente:     function(id) { return this.get('/funcionariopaciente/return/paciente/' + id); },
+    getAssociacoesFuncionario:  function(id) { return this.get('/funcionariopaciente/return/funcionario/' + id); },
+    desativarAssociacao:        function(funcId, pacId) { return this.patch('/funcionariopaciente/desativar/' + funcId + '/' + pacId); },
+    reativarAssociacao:         function(funcId, pacId) { return this.patch('/funcionariopaciente/reativar/' + funcId + '/' + pacId); },
+
+    listarDiagnosticos:         function() { return this.get('/diagnosticos/return/all'); },
+    cadastrarDiagnostico:       function(body) { return this.post('/diagnosticos/register', body); },
+    getDiagnostico:             function(id) { return this.get('/diagnosticos/return/' + id); },
+    getDiagnosticosPaciente:    function(id) { return this.get('/diagnosticos/return/paciente/' + id); },
+    atualizarDiagnostico:       function(id, body) { return this.put('/diagnosticos/update/' + id, body); }
 };
 
 function requireAuth(callback) {
