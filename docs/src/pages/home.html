@@ -19,13 +19,15 @@
             </div>
             <nav>
                 <a href="#" class="active"><i data-lucide="home"></i> Início</a>
-                <a href="#"><i data-lucide="info"></i> Sobre a FXS</a>
+                <a href="./sobre-fxs.html"><i data-lucide="info"></i> Sobre a FXS</a>
                 <a href="./cadastro-medicos.html" data-admin-only><i data-lucide="user-plus"></i> Cadastro de Médicos</a>
-                <a href="./cadastro-pacientes.html"><i data-lucide="user"></i> Cadastro de Pacientes</a>
-                <a href="#"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
-                <a href="#"><i data-lucide="bar-chart-3"></i> Resultados</a>
+                <a href="./cadastro-pacientes.html"><i data-lucide="users"></i> Cadastro de Pacientes</a>
+                <a href="./triagem.html"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
+                <a href="./resultados.html"><i data-lucide="bar-chart-3"></i> Resultados</a>
+                <a href="./associacoes.html" data-admin-only><i data-lucide="link"></i> Associações</a>
             </nav>
             <div class="sidebar-footer">
+                <a href="./perfil.html" class="perfil-link"><i data-lucide="user"></i> Meu Perfil</a>
                 <a href="#" onclick="logout(); return false;" class="logout-link"><i data-lucide="log-out"></i> Sair</a>
                 <p>PUCPR • Instituto Buko Kaesemodel</p>
                 <p>v1.0.0 - 2025</p>
@@ -46,7 +48,7 @@
                 <div class="banner-text">
                     <h3>Ferramenta de Triagem Clinical Validada</h3>
                     <p>Desenvolvida com base em coorte de 419 indivíduos com FXS (IBK 2018–2023). Utiliza Random Forest com sensibilidade de 95% e AUC > 0,70 para ambos os sexos.</p>
-                    <button class="btn-saiba-mais">Saiba mais <i data-lucide="arrow-right"></i></button>
+                    <a href="./sobre-fxs.html" class="btn-saiba-mais">Saiba mais <i data-lucide="arrow-right"></i></a>
                 </div>
             </div>
 
@@ -78,9 +80,11 @@
                     <h3>Ações Rápidas</h3>
                     <ul class="action-list">
                         <li>
-                            <div class="action-icon-bg green-soft"><i data-lucide="clipboard-check"></i></div>
-                            <div class="action-text"><strong>Nova Triagem de Sintomas</strong><span>Aplicar checklist clínico</span></div>
-                            <i data-lucide="chevron-right" class="chevron"></i>
+                            <a href="./triagem.html">
+                                <div class="action-icon-bg green-soft"><i data-lucide="clipboard-check"></i></div>
+                                <div class="action-text"><strong>Nova Triagem de Sintomas</strong><span>Aplicar checklist clínico</span></div>
+                                <i data-lucide="chevron-right" class="chevron"></i>
+                            </a>
                         </li>
                         <li>
                             <a href="./cadastro-pacientes.html">
@@ -97,21 +101,25 @@
                             </a>
                         </li>
                         <li>
-                            <div class="action-icon-bg orange-soft"><i data-lucide="bar-chart-3"></i></div>
-                            <div class="action-text"><strong>Ver Resultados</strong><span>Histórico de avaliações</span></div>
-                            <i data-lucide="chevron-right" class="chevron"></i>
+                            <a href="./resultados.html">
+                                <div class="action-icon-bg orange-soft"><i data-lucide="bar-chart-3"></i></div>
+                                <div class="action-text"><strong>Ver Resultados</strong><span>Histórico de avaliações</span></div>
+                                <i data-lucide="chevron-right" class="chevron"></i>
+                            </a>
                         </li>
                         <li>
-                            <div class="action-icon-bg yellow-soft"><i data-lucide="info"></i></div>
-                            <div class="action-text"><strong>Sobre a FXS</strong><span>Informações clínicas</span></div>
-                            <i data-lucide="chevron-right" class="chevron"></i>
+                            <a href="./sobre-fxs.html">
+                                <div class="action-icon-bg yellow-soft"><i data-lucide="info"></i></div>
+                                <div class="action-text"><strong>Sobre a FXS</strong><span>Informações clínicas</span></div>
+                                <i data-lucide="chevron-right" class="chevron"></i>
+                            </a>
                         </li>
                     </ul>
                 </div>
                 <div class="card evaluations">
                     <div class="card-header">
                         <h3>Últimas Avaliações</h3>
-                        <a href="./cadastro-pacientes.html" id="btn-ver-todos">Ver todos <i data-lucide="arrow-right"></i></a>
+                        <a href="./resultados.html" id="btn-ver-todos">Ver todos <i data-lucide="arrow-right"></i></a>
                     </div>
                     <div id="evaluations-container"></div>
                 </div>
