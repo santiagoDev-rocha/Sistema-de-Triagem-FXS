@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Associações - FXS</title>
+    <link rel="stylesheet" href="./../css/associacoes.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-auth-compat.js"></script>
+    <script src="./../js/api.js" defer></script>
+    <script src="./../js/associacoes.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="./../img/logo.png" alt="IBK Logo" class="logo-img">
+            </div>
+            <nav>
+                <a href="./home.html"><i data-lucide="home"></i> Início</a>
+                <a href="./sobre-fxs.html"><i data-lucide="info"></i> Sobre a FXS</a>
+                <a href="./cadastro-medicos.html"><i data-lucide="user-plus"></i> Cadastro de Médicos</a>
+                <a href="./cadastro-pacientes.html"><i data-lucide="users"></i> Cadastro de Pacientes</a>
+                <a href="./triagem.html"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
+                <a href="./resultados.html"><i data-lucide="bar-chart-3"></i> Resultados</a>
+                <a href="#" class="active"><i data-lucide="link"></i> Associações</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="./perfil.html" class="perfil-link"><i data-lucide="user"></i> Meu Perfil</a>
+                <a href="#" onclick="logout(); return false;" class="logout-link"><i data-lucide="log-out"></i> Sair</a>
+                <p>PUCPR • Instituto Buko Kaesemodel</p>
+                <p>v1.0.0 - 2025</p>
+            </div>
+        </aside>
+
+        <main class="content">
+            <header class="breadcrumb">
+                FXS Brasil > <span>Associações</span>
+            </header>
+
+            <section class="page-header">
+                <h1>Gerenciamento de Associações</h1>
+                <p id="contador-associacoes">0 associações</p>
+            </section>
+
+            <div class="card">
+                <div class="filter-bar">
+                    <div class="search-input">
+                        <i data-lucide="search"></i>
+                        <input type="text" id="busca-assoc" placeholder="Buscar por nome de médico ou paciente...">
+                    </div>
+                    <div class="filter-options">
+                        <button class="filter-btn active" data-filter="todos">Todos</button>
+                        <button class="filter-btn" data-filter="ativos">Ativos</button>
+                        <button class="filter-btn" data-filter="inativos">Inativos</button>
+                    </div>
+                    <select id="filtro-tipo" class="tipo-select">
+                        <option value="">Todos os tipos</option>
+                        <option value="CADASTRO">Cadastro</option>
+                        <option value="MEDICO_RESPONSAVEL">Médico Responsável</option>
+                        <option value="ACOMPANHAMENTO">Acompanhamento</option>
+                    </select>
+                    <button id="btn-limpar-filtros" class="btn-secundario">Limpar filtros</button>
+                </div>
+
+                <div id="filtro-ativo-tag" class="filtro-tag" style="display:none">
+                    Filtrando por: <strong id="filtro-ativo-nome"></strong>
+                    <button id="btn-limpar-filtro-ativo" class="tag-close">&times;</button>
+                </div>
+
+                <table class="assoc-table">
+                    <thead>
+                        <tr>
+                            <th>Médico</th>
+                            <th>Paciente</th>
+                            <th>Tipo</th>
+                            <th>Data</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="assoc-body"></tbody>
+                </table>
+
+                <div id="empty-state" class="empty-state" style="display:none">
+                    <i data-lucide="link"></i>
+                    <p>Nenhuma associação encontrada</p>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
