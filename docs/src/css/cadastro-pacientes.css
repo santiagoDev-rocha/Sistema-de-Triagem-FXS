@@ -502,3 +502,37 @@ input:focus {
 .foto-btn { font-size: .75rem; padding: 4px 8px; border: 1px solid #ccc; border-radius: 6px;
     background: #fff; cursor: pointer; }
 .foto-remover { color: #c0392b; border-color: #e3b4ae; }
+.foto-img { cursor: zoom-in; transition: transform .15s ease; }
+.foto-img:hover { transform: scale(1.03); }
+
+.foto-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(0, 0, 0, .85);
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    cursor: zoom-out;
+}
+.foto-lightbox.aberto { display: flex; }
+.foto-lightbox-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, .5);
+    cursor: default;
+}
+.foto-lightbox-fechar {
+    position: absolute;
+    top: 20px;
+    right: 28px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2.5rem;
+    line-height: 1;
+    cursor: pointer;
+}
