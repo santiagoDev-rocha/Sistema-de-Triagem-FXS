@@ -160,6 +160,7 @@ formEditar.addEventListener('submit', async function(e) {
 
     try {
         await api.atualizarPaciente(id, body);
+        await enviarFotosSelecionadas(id, 'editar-foto-frente', 'editar-foto-perfil');
         modalEditar.style.display = 'none';
         formEditar.reset();
         await carregarPacientes(currentRole);
@@ -279,7 +280,11 @@ form.addEventListener('submit', async function(e) {
     };
 
     try {
-        await api.cadastrarPaciente(body);
+        var resCad = await api.cadastrarPaciente(body);
+        var novoId = resCad.data && resCad.data.id;
+        if (novoId) {
+            await enviarFotosSelecionadas(novoId, 'foto-frente', 'foto-perfil');
+        }
         modal.style.display = 'none';
         form.reset();
         await carregarPacientes(currentRole);
@@ -336,6 +341,17 @@ window.addEventListener('click', function(e) { if (e.target === modalEditar) mod
 document.getElementById('btn-fechar-detalhe').addEventListener('click', function() { modalDetalhe.style.display = 'none'; });
 document.getElementById('btn-fechar-detalhe-footer').addEventListener('click', function() { modalDetalhe.style.display = 'none'; });
 window.addEventListener('click', function(e) { if (e.target === modalDetalhe) modalDetalhe.style.display = 'none'; });
+
+async function enviarFotosSelecionadas(pacienteId, idInputFrente, idInputPerfil) {
+    var inputFrente = document.getElementById(idInputFrente);
+    var inputPerfil = document.getElementById(idInputPerfil);
+    if (inputFrente && inputFrente.files[0]) {
+        await api.uploadFotoPaciente(pacienteId, 'frente', inputFrente.files[0]);
+    }
+    if (inputPerfil && inputPerfil.files[0]) {
+        await api.uploadFotoPaciente(pacienteId, 'perfil', inputPerfil.files[0]);
+    }
+}
 
 // ── Init ──
 requireAuthWithRole(function(user, role) {

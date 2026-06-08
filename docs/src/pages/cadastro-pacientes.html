@@ -136,6 +136,16 @@
                         <input type="text" id="cpf-paciente" placeholder="000.000.000-00" required>
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Foto de Frente <span class="obs">(opcional)</span></label>
+                        <input type="file" id="foto-frente" accept="image/jpeg,image/png,image/webp">
+                    </div>
+                    <div class="form-group">
+                        <label>Foto de Perfil <span class="obs">(opcional)</span></label>
+                        <input type="file" id="foto-perfil" accept="image/jpeg,image/png,image/webp">
+                    </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" id="btn-cancelar" class="btn-cancel">Cancelar</button>
                     <button type="submit" class="btn-save"><i data-lucide="check"></i> Cadastrar Paciente</button>
@@ -217,6 +227,16 @@
                     <div class="form-group">
                         <label>CPF</label>
                         <input type="text" id="editar-cpf" readonly class="readonly-field">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Foto de Frente <span class="obs">(opcional)</span></label>
+                        <input type="file" id="editar-foto-frente" accept="image/jpeg,image/png,image/webp">
+                    </div>
+                    <div class="form-group">
+                        <label>Foto de Perfil <span class="obs">(opcional)</span></label>
+                        <input type="file" id="editar-foto-perfil" accept="image/jpeg,image/png,image/webp">
                     </div>
                 </div>
                 <div class="modal-footer">
