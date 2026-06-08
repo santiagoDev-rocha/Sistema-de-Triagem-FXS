@@ -187,6 +187,15 @@ async function abrirDetalhe(pacienteId) {
                 '<p><strong>Telefone:</strong> ' + (p.telefone || '') + '</p>' +
             '</div>';
 
+        html +=
+            '<div class="detalhe-section detalhe-fotos">' +
+                '<h4 style="margin-bottom:10px">Fotos</h4>' +
+                '<div class="fotos-slots">' +
+                    montarSlotFoto('frente', 'Frente', p.temFotoFrente) +
+                    montarSlotFoto('perfil', 'Perfil', p.temFotoPerfil) +
+                '</div>' +
+            '</div>';
+
         try {
             var resD = await api.getDiagnosticosPaciente(pacienteId);
             var diags = resD.data || [];
@@ -206,6 +215,9 @@ async function abrirDetalhe(pacienteId) {
         document.getElementById('detalhe-paciente-body').innerHTML = html;
         document.getElementById('btn-nova-triagem').href = './triagem.html?pacienteId=' + pacienteId;
         modalDetalhe.style.display = 'flex';
+        if (window.lucide) lucide.createIcons();
+        await carregarFotosDetalhe(pacienteId);
+        wireAcoesFoto(pacienteId);
     } catch (err) {
         alert(err.message || 'Erro ao carregar detalhes do paciente.');
     }
@@ -338,9 +350,9 @@ document.getElementById('btn-cancelar-editar').addEventListener('click', functio
 window.addEventListener('click', function(e) { if (e.target === modalEditar) modalEditar.style.display = 'none'; });
 
 // ── Detail modal handlers ──
-document.getElementById('btn-fechar-detalhe').addEventListener('click', function() { modalDetalhe.style.display = 'none'; });
-document.getElementById('btn-fechar-detalhe-footer').addEventListener('click', function() { modalDetalhe.style.display = 'none'; });
-window.addEventListener('click', function(e) { if (e.target === modalDetalhe) modalDetalhe.style.display = 'none'; });
+document.getElementById('btn-fechar-detalhe').addEventListener('click', function() { modalDetalhe.style.display = 'none'; liberarFotoUrls(); });
+document.getElementById('btn-fechar-detalhe-footer').addEventListener('click', function() { modalDetalhe.style.display = 'none'; liberarFotoUrls(); });
+window.addEventListener('click', function(e) { if (e.target === modalDetalhe) { modalDetalhe.style.display = 'none'; liberarFotoUrls(); } });
 
 async function enviarFotosSelecionadas(pacienteId, idInputFrente, idInputPerfil) {
     var inputFrente = document.getElementById(idInputFrente);
@@ -351,6 +363,62 @@ async function enviarFotosSelecionadas(pacienteId, idInputFrente, idInputPerfil)
     if (inputPerfil && inputPerfil.files[0]) {
         await api.uploadFotoPaciente(pacienteId, 'perfil', inputPerfil.files[0]);
     }
+}
+
+var fotoObjectUrls = [];
+
+function montarSlotFoto(tipo, label, possui) {
+    var podeGerenciar = currentRole === 'ADMIN' || currentRole === 'MEDICO';
+    var corpo = possui
+        ? '<img class="foto-img" data-tipo="' + tipo + '" alt="Foto ' + label + '">'
+        : '<div class="foto-vazia">Sem foto</div>';
+    var acoes = podeGerenciar
+        ? '<div class="foto-acoes">' +
+              '<label class="foto-btn">' + (possui ? 'Trocar' : 'Enviar') +
+                  '<input type="file" class="foto-input" data-tipo="' + tipo + '" accept="image/jpeg,image/png,image/webp" hidden>' +
+              '</label>' +
+              (possui ? '<button class="foto-btn foto-remover" data-tipo="' + tipo + '">Remover</button>' : '') +
+          '</div>'
+        : '';
+    return '<div class="foto-slot"><span class="foto-label">' + label + '</span>' + corpo + acoes + '</div>';
+}
+
+async function carregarFotosDetalhe(pacienteId) {
+    var imgs = document.querySelectorAll('#detalhe-paciente-body .foto-img');
+    for (var i = 0; i < imgs.length; i++) {
+        var img = imgs[i];
+        try {
+            var url = await api.getFotoPacienteUrl(pacienteId, img.getAttribute('data-tipo'));
+            fotoObjectUrls.push(url);
+            img.src = url;
+        } catch (e) { /* sem foto / erro: deixa o slot como está */ }
+    }
+}
+
+function wireAcoesFoto(pacienteId) {
+    document.querySelectorAll('#detalhe-paciente-body .foto-input').forEach(function(input) {
+        input.addEventListener('change', async function() {
+            if (!this.files[0]) return;
+            try {
+                await api.uploadFotoPaciente(pacienteId, this.getAttribute('data-tipo'), this.files[0]);
+                await abrirDetalhe(pacienteId);
+            } catch (err) { alert(err.message || 'Erro ao enviar foto.'); }
+        });
+    });
+    document.querySelectorAll('#detalhe-paciente-body .foto-remover').forEach(function(btn) {
+        btn.addEventListener('click', async function() {
+            if (!confirm('Remover esta foto?')) return;
+            try {
+                await api.removerFotoPaciente(pacienteId, this.getAttribute('data-tipo'));
+                await abrirDetalhe(pacienteId);
+            } catch (err) { alert(err.message || 'Erro ao remover foto.'); }
+        });
+    });
+}
+
+function liberarFotoUrls() {
+    fotoObjectUrls.forEach(function(u) { URL.revokeObjectURL(u); });
+    fotoObjectUrls = [];
 }
 
 // ── Init ──
