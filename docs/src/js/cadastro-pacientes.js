@@ -216,6 +216,7 @@ async function abrirDetalhe(pacienteId) {
         document.getElementById('btn-nova-triagem').href = './triagem.html?pacienteId=' + pacienteId;
         modalDetalhe.style.display = 'flex';
         if (window.lucide) lucide.createIcons();
+        liberarFotoUrls();
         await carregarFotosDetalhe(pacienteId);
         wireAcoesFoto(pacienteId);
     } catch (err) {
