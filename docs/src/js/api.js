@@ -78,7 +78,40 @@ var api = {
     cadastrarDiagnostico:       function(body) { return this.post('/diagnosticos/register', body); },
     getDiagnostico:             function(id) { return this.get('/diagnosticos/return/' + id); },
     getDiagnosticosPaciente:    function(id) { return this.get('/diagnosticos/return/paciente/' + id); },
-    atualizarDiagnostico:       function(id, body) { return this.put('/diagnosticos/update/' + id, body); }
+    atualizarDiagnostico:       function(id, body) { return this.put('/diagnosticos/update/' + id, body); },
+
+    uploadFotoPaciente: async function(id, tipo, file) {
+        var token = await getToken();
+        var formData = new FormData();
+        formData.append('file', file);
+        var response = await fetch(API_BASE + '/pacientes/' + id + '/fotos/' + tipo, {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token },
+            body: formData
+        });
+        var data = await response.json();
+        if (!response.ok) throw { status: response.status, message: data.message || 'Erro ao enviar foto', data: data };
+        return data;
+    },
+    getFotoPacienteUrl: async function(id, tipo) {
+        var token = await getToken();
+        var response = await fetch(API_BASE + '/pacientes/' + id + '/fotos/' + tipo, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!response.ok) throw { status: response.status, message: 'Erro ao carregar foto' };
+        var blob = await response.blob();
+        return URL.createObjectURL(blob);
+    },
+    removerFotoPaciente: async function(id, tipo) {
+        var token = await getToken();
+        var response = await fetch(API_BASE + '/pacientes/' + id + '/fotos/' + tipo, {
+            method: 'DELETE',
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        var data = await response.json();
+        if (!response.ok) throw { status: response.status, message: data.message || 'Erro ao remover foto', data: data };
+        return data;
+    }
 };
 
 function requireAuth(callback) {
