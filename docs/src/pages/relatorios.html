@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - FXS</title>
+    <link rel="stylesheet" href="./../css/relatorios.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-auth-compat.js"></script>
+    <script src="./../js/api.js" defer></script>
+    <script src="./../js/relatorios.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="./../img/logo.png" alt="IBK Logo" class="logo-img">
+            </div>
+            <nav>
+                <a href="./home.html"><i data-lucide="home"></i> Início</a>
+                <a href="./sobre-fxs.html"><i data-lucide="info"></i> Sobre a FXS</a>
+                <a href="./cadastro-medicos.html" data-admin-only><i data-lucide="user-plus"></i> Cadastro de Médicos</a>
+                <a href="./cadastro-pacientes.html"><i data-lucide="users"></i> Cadastro de Pacientes</a>
+                <a href="./triagem.html"><i data-lucide="clipboard-list"></i> Formulário de Triagem</a>
+                <a href="./resultados.html"><i data-lucide="bar-chart-3"></i> Resultados</a>
+                <a href="./associacoes.html" data-admin-only><i data-lucide="link"></i> Associações</a>
+                <a href="#" class="active" data-admin-only><i data-lucide="file-text"></i> Relatórios</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="./perfil.html" class="perfil-link"><i data-lucide="user"></i> Meu Perfil</a>
+                <a href="#" onclick="logout(); return false;" class="logout-link"><i data-lucide="log-out"></i> Sair</a>
+                <p>PUCPR • Instituto Buko Kaesemodel</p>
+                <p>v1.0.0 - 2025</p>
+            </div>
+        </aside>
+        <main class="content">
+            <header class="breadcrumb">
+                FXS Brasil > <span>Relatórios</span>
+            </header>
+
+            <section class="page-header">
+                <div>
+                    <h1>Relatórios PDF</h1>
+                    <p>Gere e baixe relatórios clínicos</p>
+                </div>
+            </section>
+
+            <div class="relatorios-body">
+                <section class="card-relatorios">
+                    <h2>Relatório agregado</h2>
+                    <form id="form-agregado" class="filtros">
+                        <div class="form-group">
+                            <label for="data-inicio">Data início</label>
+                            <input type="date" id="data-inicio"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="data-fim">Data fim</label>
+                            <input type="date" id="data-fim"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="filtro-medico">Médico</label>
+                            <select id="filtro-medico"><option value="">Todos</option></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filtro-sexo">Sexo</label>
+                            <select id="filtro-sexo">
+                                <option value="">Todos</option>
+                                <option value="MASCULINO">Masculino</option>
+                                <option value="FEMININO">Feminino</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-save" id="btn-gerar-agregado">
+                            <i data-lucide="file-down"></i> Gerar e baixar
+                        </button>
+                    </form>
+                </section>
+
+                <section class="card-relatorios">
+                    <h2>Relatórios gerados</h2>
+                    <table class="tabela-relatorios">
+                        <thead><tr><th>Tipo</th><th>Nome</th><th>Data</th><th></th></tr></thead>
+                        <tbody id="lista-relatorios"></tbody>
+                    </table>
+                    <p id="relatorios-vazio" class="empty-warning" style="display:none">Nenhum relatório gerado ainda.</p>
+                </section>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

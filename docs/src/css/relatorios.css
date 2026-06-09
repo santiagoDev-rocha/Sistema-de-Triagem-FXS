@@ -1,0 +1,81 @@
+.relatorios-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 0 32px;
+}
+
+.card-relatorios {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.card-relatorios h2 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    color: #2c3e50;
+}
+
+.filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+.filtros .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.filtros label {
+    font-size: .8rem;
+    color: #666;
+}
+
+.filtros input, .filtros select {
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: .9rem;
+}
+
+.tabela-relatorios {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabela-relatorios th,
+.tabela-relatorios td {
+    border-bottom: 1px solid #eee;
+    padding: 8px;
+    text-align: left;
+    font-size: .9rem;
+}
+
+.tabela-relatorios th {
+    color: #666;
+    font-weight: 600;
+}
+
+.btn-baixar {
+    font-size: .8rem;
+    padding: 4px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+}
+
+.btn-baixar:hover {
+    background: #f4f4f5;
+}
+
+.empty-warning {
+    color: #aaa;
+    font-style: italic;
+    margin-top: 8px;
+}
