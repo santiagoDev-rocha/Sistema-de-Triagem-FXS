@@ -111,8 +111,52 @@ var api = {
         var data = await response.json();
         if (!response.ok) throw { status: response.status, message: data.message || 'Erro ao remover foto', data: data };
         return data;
+    },
+    gerarDossiePaciente: async function(id) {
+        var token = await getToken();
+        var response = await fetch(API_BASE + '/relatorios/paciente/' + id, {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!response.ok) throw { status: response.status, message: 'Erro ao gerar dossiê' };
+        return response.blob();
+    },
+    gerarRelatorioAgregado: async function(filtros) {
+        var token = await getToken();
+        var qs = new URLSearchParams();
+        if (filtros.dataInicio) qs.append('dataInicio', filtros.dataInicio);
+        if (filtros.dataFim) qs.append('dataFim', filtros.dataFim);
+        if (filtros.medicoId) qs.append('medicoId', filtros.medicoId);
+        if (filtros.sexo) qs.append('sexo', filtros.sexo);
+        var query = qs.toString();
+        var response = await fetch(API_BASE + '/relatorios/agregado' + (query ? '?' + query : ''), {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!response.ok) throw { status: response.status, message: 'Erro ao gerar relatório agregado' };
+        return response.blob();
+    },
+    listarRelatorios: function() { return this.get('/relatorios'); },
+    baixarRelatorio: async function(id) {
+        var token = await getToken();
+        var response = await fetch(API_BASE + '/relatorios/' + id + '/download', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!response.ok) throw { status: response.status, message: 'Erro ao baixar relatório' };
+        return response.blob();
     }
 };
+
+function baixarBlobComoPdf(blob, nomeArquivo) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = nomeArquivo || 'relatorio.pdf';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
 
 function requireAuth(callback) {
     firebase.auth().onAuthStateChanged(function(user) {
