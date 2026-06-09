@@ -214,6 +214,29 @@ async function abrirDetalhe(pacienteId) {
 
         document.getElementById('detalhe-paciente-body').innerHTML = html;
         document.getElementById('btn-nova-triagem').href = './triagem.html?pacienteId=' + pacienteId;
+
+        var footer = modalDetalhe.querySelector('.modal-footer');
+        var btnExistente = document.getElementById('btn-gerar-dossie');
+        if (btnExistente) btnExistente.remove();
+        if (currentRole === 'ADMIN') {
+            var btnDossie = document.createElement('button');
+            btnDossie.id = 'btn-gerar-dossie';
+            btnDossie.className = 'btn-save';
+            btnDossie.textContent = 'Gerar dossiê PDF';
+            btnDossie.addEventListener('click', async function() {
+                btnDossie.disabled = true;
+                try {
+                    var blob = await api.gerarDossiePaciente(pacienteId);
+                    baixarBlobComoPdf(blob, 'dossie-' + pacienteId + '.pdf');
+                } catch (err) {
+                    alert(err.message || 'Erro ao gerar dossiê.');
+                } finally {
+                    btnDossie.disabled = false;
+                }
+            });
+            footer.appendChild(btnDossie);
+        }
+
         modalDetalhe.style.display = 'flex';
         if (window.lucide) lucide.createIcons();
         liberarFotoUrls();
