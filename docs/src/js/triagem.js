@@ -288,7 +288,8 @@ requireAuthWithRole(async function(user, role) {
 
     try {
         var res = await api.listarPacientes();
-        listaPacientes = res.data || [];
+        // Pacientes desativados não podem receber novas triagens (regra reforçada no backend).
+        listaPacientes = (res.data || []).filter(function(p) { return p.ativo !== false; });
 
         // Check for pre-selected patient via query param
         var params = new URLSearchParams(window.location.search);
