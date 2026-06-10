@@ -37,3 +37,60 @@ document.getElementById('form-perfil').addEventListener('submit', async function
         alert(err.message || 'Erro ao atualizar perfil.');
     }
 });
+
+function mostrarFeedbackSenha(mensagem, tipo) {
+    var el = document.getElementById('senha-feedback');
+    el.textContent = mensagem;
+    el.className = 'senha-feedback ' + tipo;
+    el.style.display = 'block';
+}
+
+function mensagemErroSenha(err) {
+    switch (err && err.code) {
+        case 'auth/wrong-password':
+        case 'auth/invalid-credential':
+        case 'auth/invalid-login-credentials':
+            return 'Senha atual incorreta.';
+        case 'auth/weak-password':
+            return 'A nova senha é muito fraca. Use no mínimo 6 caracteres.';
+        case 'auth/too-many-requests':
+            return 'Muitas tentativas. Aguarde alguns minutos e tente novamente.';
+        case 'auth/requires-recent-login':
+            return 'Sessão antiga demais. Saia e entre novamente antes de alterar a senha.';
+        default:
+            return (err && err.message) || 'Erro ao alterar a senha.';
+    }
+}
+
+document.getElementById('form-senha').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    var senhaAtual = document.getElementById('senha-atual').value;
+    var senhaNova = document.getElementById('senha-nova').value;
+    var senhaConfirmacao = document.getElementById('senha-confirmacao').value;
+
+    if (senhaNova !== senhaConfirmacao) {
+        mostrarFeedbackSenha('A confirmação não confere com a nova senha.', 'erro');
+        return;
+    }
+    if (senhaNova === senhaAtual) {
+        mostrarFeedbackSenha('A nova senha deve ser diferente da senha atual.', 'erro');
+        return;
+    }
+
+    var btn = document.getElementById('btn-alterar-senha');
+    btn.disabled = true;
+    try {
+        var user = firebase.auth().currentUser;
+        var credencial = firebase.auth.EmailAuthProvider.credential(user.email, senhaAtual);
+        await user.reauthenticateWithCredential(credencial);
+        await user.updatePassword(senhaNova);
+
+        mostrarFeedbackSenha('Senha alterada com sucesso!', 'sucesso');
+        this.reset();
+    } catch (err) {
+        mostrarFeedbackSenha(mensagemErroSenha(err), 'erro');
+    } finally {
+        btn.disabled = false;
+    }
+});

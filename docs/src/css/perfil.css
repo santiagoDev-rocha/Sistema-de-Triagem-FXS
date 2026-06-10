@@ -42,7 +42,7 @@ i[data-lucide] { width: 20px; height: 20px; stroke-width: 2.5px; }
 
 label { display: block; font-size: 0.85rem; font-weight: 600; color: #475569; margin-bottom: 8px; }
 
-input[type="text"], input[type="email"], input[type="date"] {
+input[type="text"], input[type="email"], input[type="date"], input[type="password"] {
     width: 100%;
     padding: 10px 14px;
     border: 1px solid #cbd5e1;
@@ -64,3 +64,11 @@ input:focus { border-color: var(--primary); background-color: white; }
 .form-actions { margin-top: 24px; padding-top: 16px; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; }
 .btn-save { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
 .btn-save:hover { opacity: 0.9; }
+.btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.card-senha { margin-top: 24px; }
+.card-titulo { display: flex; align-items: center; gap: 8px; font-size: 1.05rem; color: var(--primary); margin-bottom: 20px; }
+.campo-hint { display: block; margin-top: 6px; font-size: 0.75rem; color: var(--text-placeholder); }
+.senha-feedback { margin-top: 4px; font-size: 0.85rem; padding: 10px 14px; border-radius: 6px; }
+.senha-feedback.erro { background: #fef2f2; color: #991b1b; }
+.senha-feedback.sucesso { background: #f0fdf4; color: #166534; }

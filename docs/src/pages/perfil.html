@@ -91,6 +91,31 @@
                     </div>
                 </form>
             </div>
+
+            <div class="card card-senha">
+                <h3 class="card-titulo"><i data-lucide="lock"></i> Alterar Senha</h3>
+                <form id="form-senha">
+                    <div class="form-group">
+                        <label for="senha-atual">Senha atual *</label>
+                        <input type="password" id="senha-atual" autocomplete="current-password" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="senha-nova">Nova senha *</label>
+                            <input type="password" id="senha-nova" autocomplete="new-password" minlength="6" required>
+                            <small class="campo-hint">Mínimo de 6 caracteres</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="senha-confirmacao">Confirmar nova senha *</label>
+                            <input type="password" id="senha-confirmacao" autocomplete="new-password" minlength="6" required>
+                        </div>
+                    </div>
+                    <p id="senha-feedback" class="senha-feedback" style="display:none"></p>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-save" id="btn-alterar-senha"><i data-lucide="key-round"></i> Alterar Senha</button>
+                    </div>
+                </form>
+            </div>
         </main>
     </div>
 </body>
