@@ -222,7 +222,7 @@ async function abrirDetalhe(pacienteId) {
             var btnDossie = document.createElement('button');
             btnDossie.id = 'btn-gerar-dossie';
             btnDossie.className = 'btn-save';
-            btnDossie.textContent = 'Gerar dossiê PDF';
+            btnDossie.textContent = 'Gerar relatório do paciente PDF';
             btnDossie.addEventListener('click', async function() {
                 btnDossie.disabled = true;
                 try {

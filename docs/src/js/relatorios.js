@@ -31,7 +31,7 @@ async function carregarRelatorios() {
             var tr = document.createElement('tr');
 
             var tdTipo = document.createElement('td');
-            tdTipo.textContent = r.tipo === 'INDIVIDUAL' ? 'Dossiê' : 'Agregado';
+            tdTipo.textContent = r.tipo === 'INDIVIDUAL' ? 'Relatório do paciente' : 'Agregado';
             var tdNome = document.createElement('td');
             tdNome.textContent = r.nomeArquivo;
             var tdData = document.createElement('td');
