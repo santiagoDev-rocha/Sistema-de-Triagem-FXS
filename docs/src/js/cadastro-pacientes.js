@@ -383,6 +383,8 @@ document.getElementById('foto-lightbox-fechar').addEventListener('click', fechar
 document.getElementById('foto-lightbox').addEventListener('click', function(e) {
     if (e.target === this) fecharLightbox();
 });
+document.getElementById('foto-lightbox-img').addEventListener('click', baixarFotoLightbox);
+document.getElementById('foto-lightbox-baixar').addEventListener('click', baixarFotoLightbox);
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') fecharLightbox();
 });
@@ -416,14 +418,33 @@ function montarSlotFoto(tipo, label, possui) {
     return '<div class="foto-slot"><span class="foto-label">' + label + '</span>' + corpo + acoes + '</div>';
 }
 
+function extensaoDeContentType(type) {
+    if (type === 'image/png') return 'png';
+    if (type === 'image/webp') return 'webp';
+    return 'jpg';
+}
+
+function baixarFotoUrl(url, nomeArquivo) {
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = nomeArquivo;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
 async function carregarFotosDetalhe(pacienteId) {
     var imgs = document.querySelectorAll('#detalhe-paciente-body .foto-img');
     for (var i = 0; i < imgs.length; i++) {
         var img = imgs[i];
         try {
-            var url = await api.getFotoPacienteUrl(pacienteId, img.getAttribute('data-tipo'));
+            var tipo = img.getAttribute('data-tipo');
+            var blob = await api.getFotoPacienteBlob(pacienteId, tipo);
+            var url = URL.createObjectURL(blob);
             fotoObjectUrls.push(url);
             img.src = url;
+            img.setAttribute('data-download',
+                'paciente-' + pacienteId + '-' + tipo + '.' + extensaoDeContentType(blob.type));
         } catch (e) { /* sem foto / erro: deixa o slot como está */ }
     }
 }
@@ -449,7 +470,7 @@ function wireAcoesFoto(pacienteId) {
     });
     document.querySelectorAll('#detalhe-paciente-body .foto-img').forEach(function(img) {
         img.addEventListener('click', function() {
-            if (this.src) abrirLightbox(this.src, this.alt);
+            if (this.src) abrirLightbox(this.src, this.alt, this.getAttribute('data-download'));
         });
     });
 }
@@ -461,12 +482,18 @@ function liberarFotoUrls() {
 }
 
 // ── Lightbox (foto em tela cheia) ──
-function abrirLightbox(src, alt) {
+function abrirLightbox(src, alt, nomeDownload) {
     var box = document.getElementById('foto-lightbox');
     var img = document.getElementById('foto-lightbox-img');
     img.src = src;
     img.alt = alt || 'Foto ampliada';
+    img.setAttribute('data-download', nomeDownload || 'foto-paciente.jpg');
     box.classList.add('aberto');
+}
+
+function baixarFotoLightbox() {
+    var img = document.getElementById('foto-lightbox-img');
+    if (img.src) baixarFotoUrl(img.src, img.getAttribute('data-download') || 'foto-paciente.jpg');
 }
 
 function fecharLightbox() {

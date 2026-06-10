@@ -93,13 +93,16 @@ var api = {
         if (!response.ok) throw { status: response.status, message: data.message || 'Erro ao enviar foto', data: data };
         return data;
     },
-    getFotoPacienteUrl: async function(id, tipo) {
+    getFotoPacienteBlob: async function(id, tipo) {
         var token = await getToken();
         var response = await fetch(API_BASE + '/pacientes/' + id + '/fotos/' + tipo, {
             headers: { 'Authorization': 'Bearer ' + token }
         });
         if (!response.ok) throw { status: response.status, message: 'Erro ao carregar foto' };
-        var blob = await response.blob();
+        return response.blob();
+    },
+    getFotoPacienteUrl: async function(id, tipo) {
+        var blob = await this.getFotoPacienteBlob(id, tipo);
         return URL.createObjectURL(blob);
     },
     removerFotoPaciente: async function(id, tipo) {

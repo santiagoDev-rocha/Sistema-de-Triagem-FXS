@@ -519,12 +519,28 @@ input:focus {
 .foto-lightbox.aberto { display: flex; }
 .foto-lightbox-img {
     max-width: 90vw;
-    max-height: 90vh;
+    max-height: 85vh;
     object-fit: contain;
     border-radius: 8px;
     box-shadow: 0 8px 40px rgba(0, 0, 0, .5);
-    cursor: default;
+    cursor: pointer;
 }
+.foto-lightbox-baixar {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, .95);
+    color: #212b54;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: .9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+.foto-lightbox-baixar:hover { background: #fff; }
 .foto-lightbox-fechar {
     position: absolute;
     top: 20px;
