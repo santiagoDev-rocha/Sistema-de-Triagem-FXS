@@ -1,4 +1,7 @@
-const API_BASE = 'http://localhost:8082';
+// Dev (live-server local) fala com a API local; qualquer outro host usa a API publicada.
+const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+    ? 'http://localhost:8082'
+    : 'https://fxs-detectorapi.onrender.com';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCP24casgC0MO__TsC5oNojRM1smEAGNm8",
