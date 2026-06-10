@@ -29,20 +29,31 @@ async function carregarRelatorios() {
         vazio.style.display = lista.length === 0 ? 'block' : 'none';
         lista.forEach(function(r) {
             var tr = document.createElement('tr');
-            tr.innerHTML =
-                '<td>' + (r.tipo === 'INDIVIDUAL' ? 'Dossiê' : 'Agregado') + '</td>' +
-                '<td>' + r.nomeArquivo + '</td>' +
-                '<td>' + formatarData(r.createdAt) + '</td>' +
-                '<td><button class="btn-baixar" data-id="' + r.id + '" data-nome="' + r.nomeArquivo + '">Baixar</button></td>';
-            tbody.appendChild(tr);
-        });
-        tbody.querySelectorAll('.btn-baixar').forEach(function(btn) {
+
+            var tdTipo = document.createElement('td');
+            tdTipo.textContent = r.tipo === 'INDIVIDUAL' ? 'Dossiê' : 'Agregado';
+            var tdNome = document.createElement('td');
+            tdNome.textContent = r.nomeArquivo;
+            var tdData = document.createElement('td');
+            tdData.textContent = formatarData(r.createdAt);
+
+            var tdAcao = document.createElement('td');
+            var btn = document.createElement('button');
+            btn.className = 'btn-baixar';
+            btn.textContent = 'Baixar';
             btn.addEventListener('click', async function() {
                 try {
-                    var blob = await api.baixarRelatorio(this.getAttribute('data-id'));
-                    baixarBlobComoPdf(blob, this.getAttribute('data-nome'));
+                    var blob = await api.baixarRelatorio(r.id);
+                    baixarBlobComoPdf(blob, r.nomeArquivo);
                 } catch (err) { alert(err.message || 'Erro ao baixar relatório.'); }
             });
+            tdAcao.appendChild(btn);
+
+            tr.appendChild(tdTipo);
+            tr.appendChild(tdNome);
+            tr.appendChild(tdData);
+            tr.appendChild(tdAcao);
+            tbody.appendChild(tr);
         });
     } catch (err) {
         vazio.style.display = 'block';
@@ -75,6 +86,7 @@ requireAuthWithRole(function(user, role) {
         window.location.href = './home.html';
         return;
     }
+    document.querySelectorAll('[data-admin-only]').forEach(function(el) { el.style.display = ''; });
     carregarMedicos();
     carregarRelatorios();
     wireFormAgregado();

@@ -229,9 +229,10 @@ window.addEventListener('click', function(e) { if (e.target === modalEditar) mod
 // Init
 requireAuthWithRole(function(user, role) {
     currentUid = user ? user.uid : null;
-    if (role === 'MEDICO') {
+    if (role !== 'ADMIN') {
         window.location.href = './home.html';
         return;
     }
+    document.querySelectorAll('[data-admin-only]').forEach(function(el) { el.style.display = ''; });
     carregarMedicos();
 });

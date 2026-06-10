@@ -165,9 +165,10 @@ document.getElementById('btn-limpar-filtro-ativo').addEventListener('click', fun
 
 // Init
 requireAuthWithRole(function(user, role) {
-    if (role === 'MEDICO') {
+    if (role !== 'ADMIN') {
         window.location.href = './home.html';
         return;
     }
+    document.querySelectorAll('[data-admin-only]').forEach(function(el) { el.style.display = ''; });
     carregarAssociacoes();
 });
