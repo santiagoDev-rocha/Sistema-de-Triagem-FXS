@@ -82,12 +82,10 @@ function wireFormAgregado() {
 
 requireAuthWithRole(function(user, role) {
     currentRole = role;
-    if (role !== 'ADMIN') {
-        window.location.href = './home.html';
-        return;
+    if (role === 'ADMIN') {
+        document.querySelectorAll('[data-admin-only]').forEach(function(el) { el.style.display = ''; });
+        carregarMedicos();
     }
-    document.querySelectorAll('[data-admin-only]').forEach(function(el) { el.style.display = ''; });
-    carregarMedicos();
     carregarRelatorios();
     wireFormAgregado();
     if (window.lucide) lucide.createIcons();
