@@ -218,7 +218,7 @@ async function abrirDetalhe(pacienteId) {
         var footer = modalDetalhe.querySelector('.modal-footer');
         var btnExistente = document.getElementById('btn-gerar-dossie');
         if (btnExistente) btnExistente.remove();
-        if (currentRole === 'ADMIN') {
+        if (currentRole === 'ADMIN' || currentRole === 'MEDICO') {
             var btnDossie = document.createElement('button');
             btnDossie.id = 'btn-gerar-dossie';
             btnDossie.className = 'btn-save';
