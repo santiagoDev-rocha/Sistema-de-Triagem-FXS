@@ -40,7 +40,7 @@ triagem populacional com alta sensibilidade.
 - **Font Awesome 6.4.0** (via CDN) — ícones da tela de login.
 
 Todo o site é estático e fica dentro de `docs/`, o que permite publicar
-diretamente via **GitHub Pages** apontando para essa pasta.
+diretamente como **Static Site no Render** apontando para essa pasta.
 
 ### Comunicação com a API (`docs/src/js/api.js`)
 
@@ -59,7 +59,7 @@ diretamente via **GitHub Pages** apontando para essa pasta.
 
 ```text
 fxsDetectorFront/
-└── docs/                       # raiz publicada (GitHub Pages)
+└── docs/                       # raiz publicada (Render Static Site)
     ├── index.html              # tela de login
     └── src/
         ├── css/                # 1 CSS por página + style.css (global/login)
@@ -106,8 +106,9 @@ Não há build nem instalação de dependências — é HTML/CSS/JS puro.
 5. Faça login com um usuário cadastrado no backend (veja o README da API para
    criar o admin inicial via bootstrap).
 
-> Em produção, basta publicar a pasta `docs/` (ex.: GitHub Pages). O `api.js`
-> troca automaticamente para a API publicada quando o host não é `localhost`.
+> Em produção, basta publicar a pasta `docs/` como **Static Site no Render**
+> (Build Command vazio, Publish Directory `docs`). O `api.js` troca
+> automaticamente para a API publicada quando o host não é `localhost`.
 
 ---
 
